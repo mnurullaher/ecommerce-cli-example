@@ -6,12 +6,10 @@ import java.util.stream.Collectors;
 
 public class Product {
     private int id;
-    private String name;
-    private double price;
-    private Date createdAt;
+    private final String name;
+    private final double price;
+    private final Date createdAt;
     private List<Category> categories;
-
-    public Product(){}
 
     public Product(String name, double price, Date createdAt) {
         this.name = name;
@@ -31,24 +29,12 @@ public class Product {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     public List<Category> getCategories() {

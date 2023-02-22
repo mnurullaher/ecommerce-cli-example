@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import org.nurullah.model.Product;
 import org.nurullah.repository.ProductRepository;
 
-import java.lang.reflect.Array;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
