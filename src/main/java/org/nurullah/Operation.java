@@ -1,13 +1,14 @@
-package org.test;
+package org.nurullah;
 
-import org.service.UserService;
+import org.nurullah.service.UserService;
+
 import java.util.Scanner;
 
 public class Operation {
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();
 
-    public void createUser(){
+    public void createUser() {
         System.out.print("Name: ");
         var name = scanner.next();
 
@@ -17,12 +18,13 @@ public class Operation {
         userService.createUser(name, email);
     }
 
-    public void deleteUser(){
+    public void deleteUser() {
         System.out.print("The ID of user you want to delete: ");
         var id = scanner.nextInt();
         userService.deleteUser(id);
     }
-    public void listUsers(){
+
+    public void listUsers() {
         userService.listUsers();
     }
 }

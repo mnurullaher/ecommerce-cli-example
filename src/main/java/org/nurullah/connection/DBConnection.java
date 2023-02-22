@@ -1,4 +1,4 @@
-package org.connection;
+package org.nurullah.connection;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +31,7 @@ public class DBConnection {
         }
     }
 
-    public static Connection getConnection (){
+    public static Connection getConnection() {
         Connection connection = null;
         try {
             Class.forName(driver);
@@ -46,8 +46,9 @@ public class DBConnection {
         }
         return connection;
     }
-    public static void closeConnection(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet){
-        if (resultSet != null){
+
+    public static void closeConnection(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
+        if (resultSet != null) {
             try {
                 resultSet.close();
             } catch (SQLException e) {
@@ -55,15 +56,14 @@ public class DBConnection {
             }
         }
 
-        if (preparedStatement != null){
+        if (preparedStatement != null) {
             try {
                 preparedStatement.close();
             } catch (SQLException e) {
                 logger.warn("ERROR while closing prepared statement: " + e);
             }
         }
-
-        if (connection != null){
+        if (connection != null) {
             try {
                 connection.close();
             } catch (SQLException e) {
@@ -71,5 +71,4 @@ public class DBConnection {
             }
         }
     }
-
 }
