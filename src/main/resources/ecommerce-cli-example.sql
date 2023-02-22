@@ -11,7 +11,7 @@ CREATE TABLE users(
 CREATE TABLE products(
 	product_id INT NOT NULL AUTO_INCREMENT,
 	product_name VARCHAR(50),
-	product_price DOUBLE,
+	product_price INT,
 	createdAt TIMESTAMP,
 	PRIMARY KEY(product_id)
 );

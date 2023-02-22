@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class ApplicationEntryPoint {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        Operation operation = new Operation();
+        CLIController operation = new CLIController();
         while (true) {
             System.out.println();
             System.out.println("""
@@ -40,6 +40,7 @@ public class ApplicationEntryPoint {
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createProduct();
                 else if (selectedOperation == 2) operation.deleteProduct();
+                else if (selectedOperation == 4) operation.listProducts();
             } else if (selectedEntity == 3) {
                 System.out.println("""
                         Please select the operation you want to execute

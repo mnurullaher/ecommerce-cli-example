@@ -1,12 +1,15 @@
 package org.nurullah;
 
+import org.nurullah.model.Product;
 import org.nurullah.service.CategoryService;
 import org.nurullah.service.ProductService;
 import org.nurullah.service.UserService;
+import pl.mjaron.etudes.Table;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-public class Operation {
+public class CLIController {
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();
     ProductService productService = new ProductService();
@@ -29,7 +32,7 @@ public class Operation {
     }
 
     public void listUsers() {
-        userService.listUsers().forEach(user -> System.out.println(user.toString()));;
+        userService.listUsers().forEach(user -> System.out.println(user.toString()));
     }
 
     public void createProduct(){
@@ -39,7 +42,12 @@ public class Operation {
         System.out.println("Price: ");
         var price = scanner.nextDouble();
 
-        productService.createProduct(name, price);
+        System.out.println("Kategorileri giriniz: ");
+        var categories = scanner.next();
+        String[] categoriesArray = categories.split(",");
+        var categoryIds = Arrays.stream(categoriesArray).map(Integer::parseInt).toList();
+
+        productService.createProduct(name, price, categoryIds);
     }
 
     public void deleteProduct(){
@@ -58,5 +66,10 @@ public class Operation {
         System.out.println("The id of the category you want to delete: ");
         var id = scanner.nextInt();
         categoryService.deleteCategory(id);
+    }
+
+    public void listProducts() {
+        var prducts = productService.listProducts();
+        Table.render(prducts, Product.class).run();
     }
 }

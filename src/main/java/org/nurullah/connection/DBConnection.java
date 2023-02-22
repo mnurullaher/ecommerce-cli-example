@@ -27,7 +27,8 @@ public class DBConnection {
             userName = properties.getProperty("db_username");
             password = properties.getProperty("db_password");
         } catch (IOException e) {
-            logger.warn(e.getLocalizedMessage());
+            logger.error(e.getLocalizedMessage());
+            System.exit(-1);
         }
     }
 
@@ -36,13 +37,15 @@ public class DBConnection {
         try {
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
-            logger.warn("Database driver not found.\n ERROR: " + e);
+            logger.error("Database driver not found.\n ERROR: " + e);
+            System.exit(-1);
         }
 
         try {
             connection = DriverManager.getConnection(url, userName, password);
         } catch (SQLException e) {
-            logger.warn("ERROR while establishing connection: " + e);
+            logger.error("ERROR while establishing connection: " + e);
+            System.exit(-1);
         }
         return connection;
     }

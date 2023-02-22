@@ -40,7 +40,6 @@ public class Category {
 
     @Override
     public String toString() {
-        return String.format("|CategoryId: %s| |CategoryName: %s| |CreatedAt: %s|",
-                getId(), getName(), getCreatedAt());
+        return getName();
     }
 }
