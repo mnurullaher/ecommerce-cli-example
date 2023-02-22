@@ -32,7 +32,17 @@ public class CategoryRepository {
                 category.setId(resultSet.getInt(1));
             }
         } catch (SQLException e) {
-            logger.warn("ERROR while saving category");
+            logger.warn("ERROR while saving category: " + e);
+        }
+    }
+
+    public void delelteCategory(int categoryId){
+        try {
+            preparedStatement = connection.prepareStatement(CategoryQuery.deleteCategoryQuery);
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("ERROR while deleting category: " + e);
         }
     }
 }

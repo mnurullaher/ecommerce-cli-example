@@ -51,7 +51,12 @@ public class Operation {
     public void createCategory(){
         System.out.println("Name: ");
         var name= scanner.next();
-
         categoryService.createCategory(name);
+    }
+
+    public void deleteCategory(){
+        System.out.println("The id of the category you want to delete: ");
+        var id = scanner.nextInt();
+        categoryService.deleteCategory(id);
     }
 }

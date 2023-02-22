@@ -50,6 +50,7 @@ public class ApplicationEntryPoint {
                         """);
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createCategory();
+                else if (selectedOperation == 2) operation.deleteCategory();
             } else System.out.println("Invalid Selection!");
         }
     }

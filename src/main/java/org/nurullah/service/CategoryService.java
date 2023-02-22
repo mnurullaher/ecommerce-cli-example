@@ -17,4 +17,9 @@ public class CategoryService {
         categoryRepository.saveCategory(category);
         logger.info("The category with id number " + category.getId() + " has successfully saved");
     }
+
+    public void deleteCategory(int categoryId){
+        categoryRepository.delelteCategory(categoryId);
+        logger.info("Category with id number " + categoryId + " has successfully deleted");
+    }
 }
