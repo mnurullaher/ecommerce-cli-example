@@ -15,7 +15,7 @@ public class ProductService {
     public void createProduct(String name, Double price){
         Product product = new Product(name, price, Date.from(Instant.now()));
         productRepository.saveProduct(product);
-        logger.info("The product with id number " + product.getId() + "has successfully saved");
+        logger.info("The product with id number " + product.getId() + " has successfully saved");
     }
 
     public void deleteProduct(int productId){

@@ -1,5 +1,6 @@
 package org.nurullah;
 
+import org.nurullah.service.CategoryService;
 import org.nurullah.service.ProductService;
 import org.nurullah.service.UserService;
 
@@ -9,6 +10,7 @@ public class Operation {
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();
     ProductService productService = new ProductService();
+    CategoryService categoryService = new CategoryService();
 
     public void createUser() {
         System.out.print("Name: ");
@@ -27,7 +29,7 @@ public class Operation {
     }
 
     public void listUsers() {
-        userService.listUsers();
+        userService.listUsers().forEach(user -> System.out.println(user.toString()));;
     }
 
     public void createProduct(){
@@ -39,9 +41,17 @@ public class Operation {
 
         productService.createProduct(name, price);
     }
+
     public void deleteProduct(){
         System.out.println("The ID of product you want to delete");
         var id = scanner.nextInt();
         productService.deleteProduct(id);
+    }
+
+    public void createCategory(){
+        System.out.println("Name: ");
+        var name= scanner.next();
+
+        categoryService.createCategory(name);
     }
 }

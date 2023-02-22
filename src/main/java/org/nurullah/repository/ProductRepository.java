@@ -20,7 +20,8 @@ public class ProductRepository {
 
     public void saveProduct(Product product){
         try {
-            preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
+                    Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, new Timestamp(product.getCreatedAt().getTime()));

@@ -7,6 +7,7 @@ import org.nurullah.repository.UserRepository;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 public class UserService {
     private final Logger logger = LogManager.getLogger();
@@ -23,8 +24,7 @@ public class UserService {
         logger.info("User with id number " + userId + " has succesfully deleted");
     }
 
-    public void listUsers() {
-        var users = userRepository.listUsers();
-        users.forEach(user -> System.out.println(user.toString()));
+    public List<User> listUsers() {
+        return userRepository.listUsers();
     }
 }

@@ -40,8 +40,17 @@ public class ApplicationEntryPoint {
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createProduct();
                 else if (selectedOperation == 2) operation.deleteProduct();
-            }
-            else System.out.println("Invalid Selection!");
+            } else if (selectedEntity == 3) {
+                System.out.println("""
+                        Please select the operation you want to execute
+                        [1]\tCreate
+                        [2]\tDelete
+                        [3]\tUpdate
+                        [4]\tList
+                        """);
+                var selectedOperation = scanner.nextInt();
+                if (selectedOperation == 1) operation.createCategory();
+            } else System.out.println("Invalid Selection!");
         }
     }
 }
