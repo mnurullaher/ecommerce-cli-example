@@ -36,7 +36,7 @@ public class CategoryRepository {
         }
     }
 
-    public void delelteCategory(int categoryId){
+    public void deleteCategory(int categoryId){
         try {
             preparedStatement = connection.prepareStatement(CategoryQuery.deleteCategoryQuery);
             preparedStatement.setInt(1, categoryId);

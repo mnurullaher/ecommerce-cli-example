@@ -19,7 +19,7 @@ public class CategoryService {
     }
 
     public void deleteCategory(int categoryId){
-        categoryRepository.delelteCategory(categoryId);
+        categoryRepository.deleteCategory(categoryId);
         logger.info("Category with id number " + categoryId + " has successfully deleted");
     }
 }
