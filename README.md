@@ -1,0 +1,1 @@
+You should add "db_password" property to the "database.properties" file in order to be able to get the database connection properly.
