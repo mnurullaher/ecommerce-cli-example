@@ -47,7 +47,15 @@ public class ProductRepository {
 
     public void deleteProduct(int productId){
         try {
-            var preparedStatement = connection.prepareStatement(ProductQuery.deleteProductQuery);
+            var preparedStatement = connection.prepareStatement(ProductQuery.deleteFromProductCategoryList);
+            preparedStatement.setInt(1, productId);
+            preparedStatement.executeUpdate();
+
+            preparedStatement = connection.prepareStatement(ProductQuery.deleteFromOrderItems);
+            preparedStatement.setInt(1, productId);
+            preparedStatement.executeUpdate();
+
+            preparedStatement = connection.prepareStatement(ProductQuery.deleteProductQuery);
             preparedStatement.setInt(1, productId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -62,14 +70,14 @@ public class ProductRepository {
             var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                var product_id = resultSet.getInt("product_id");
-                var product_name = resultSet.getString("product_name");
-                var product_price = resultSet.getDouble("product_price");
+                var productId = resultSet.getInt("product_id");
+                var productName = resultSet.getString("product_name");
+                var productPrice = resultSet.getDouble("product_price");
                 var createdAt = resultSet.getTimestamp("createdAt");
 
-                Product product = new Product(product_name, product_price, createdAt);
-                product.setId(product_id);
-                product.setCategories(findCategoriesOfProduct(product_id));
+                Product product = new Product(productName, productPrice, createdAt);
+                product.setId(productId);
+                product.setCategories(findCategoriesOfProduct(productId));
                 products.add(product);
             }
         } catch (SQLException e) {

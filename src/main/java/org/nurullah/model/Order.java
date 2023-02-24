@@ -2,13 +2,14 @@ package org.nurullah.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class Order {
     private int id;
     private int userId;
     private String status;
     private Date createdAt;
-    private List<Product> items;
+    private Map<String, Integer> items;
 
     public Order(int userId, String status, Date createdAt) {
         this.userId = userId;
@@ -48,11 +49,11 @@ public class Order {
         this.createdAt = createdAt;
     }
 
-    public List<Product> getItems() {
+    public Map<String, Integer> getItems() {
         return items;
     }
 
-    public void setItems(List<Product> items) {
+    public void setItems(Map<String, Integer> items) {
         this.items = items;
     }
 

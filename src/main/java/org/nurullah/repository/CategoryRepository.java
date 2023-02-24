@@ -11,8 +11,6 @@ import java.sql.*;
 public class CategoryRepository {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
 
     public CategoryRepository(){
         connection = DBConnection.getConnection();
@@ -20,14 +18,14 @@ public class CategoryRepository {
 
     public void saveCategory(Category category){
         try {
-            preparedStatement = connection.prepareStatement(CategoryQuery.saveCategoryQuery,
+            var preparedStatement = connection.prepareStatement(CategoryQuery.saveCategoryQuery,
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, category.getId());
             preparedStatement.setString(2, category.getName());
             preparedStatement.setTimestamp(3, new Timestamp(category.getCreatedAt().getTime()));
             preparedStatement.executeUpdate();
 
-            resultSet = preparedStatement.getGeneratedKeys();
+            var resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()){
                 category.setId(resultSet.getInt(1));
             }
@@ -38,6 +36,10 @@ public class CategoryRepository {
 
     public void deleteCategory(int categoryId){
         try {
+            var preparedStatement = connection.prepareStatement(CategoryQuery.deleteFromProductCategories);
+            preparedStatement.setInt(1, categoryId);
+            preparedStatement.executeUpdate();
+
             preparedStatement = connection.prepareStatement(CategoryQuery.deleteCategoryQuery);
             preparedStatement.setInt(1, categoryId);
             preparedStatement.executeUpdate();

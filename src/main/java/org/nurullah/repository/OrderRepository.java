@@ -4,12 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Order;
+import org.nurullah.model.Product;
 import org.nurullah.repository.query.OrderQuery;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,5 +49,50 @@ public class OrderRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while saving order: " + e);
         }
+    }
+
+    public List<Order> listOrders(){
+        List<Order> orders = new ArrayList<>();
+        try {
+            var preparedStatement = connection.prepareStatement(OrderQuery.listOrdersQuery);
+            var resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                var orderId = resultSet.getInt("order_id");
+                var userId = resultSet.getInt("user_id");
+                var status = resultSet.getString("status");
+                var createdAt = resultSet.getTimestamp("createdAt");
+
+                Order order = new Order(userId, status, createdAt);
+                order.setId(orderId);
+                order.setItems(findItemsOfOrder(orderId));
+                orders.add(order);
+            }
+        } catch (SQLException e) {
+            logger.warn("ERROR while listing orders: " + e);
+        }
+
+        return orders;
+    }
+
+    public Map<String , Integer> findItemsOfOrder(int orderId){
+        Map<String, Integer> itemMap = new HashMap<>();
+        try {
+            var preparedStatement = connection.prepareStatement(OrderQuery.listOrderItemsQuery);
+            preparedStatement.setInt(1, orderId);
+
+            var resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                var productName = resultSet.getString("product_name");
+                var quentity = resultSet.getInt("quantity");
+
+                itemMap.put(productName, quentity);
+            }
+
+        } catch (SQLException e) {
+            logger.warn("ERROR while searching the items of the order with id " + orderId + ": " + e);
+        }
+
+        return itemMap;
     }
 }

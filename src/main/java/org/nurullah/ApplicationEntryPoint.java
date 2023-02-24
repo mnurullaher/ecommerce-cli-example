@@ -62,6 +62,7 @@ public class ApplicationEntryPoint {
                         """);
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createOrder();
+                else if (selectedOperation == 4) operation.listOrders();
             } else System.out.println("Invalid Selection!");
         }
     }

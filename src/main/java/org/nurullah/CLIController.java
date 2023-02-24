@@ -2,6 +2,7 @@ package org.nurullah;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.nurullah.model.Order;
 import org.nurullah.model.Product;
 import org.nurullah.service.CategoryService;
 import org.nurullah.service.OrderService;
@@ -104,5 +105,10 @@ public class CLIController {
 
         orderService.createOrder(userId, status, itemMap);
         logger.info("Order successfully saved");
+    }
+
+    public void listOrders() {
+        var orders = orderService.listOrders();
+        Table.render(orders, Order.class).run();
     }
 }
