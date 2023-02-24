@@ -1,19 +1,26 @@
 package org.nurullah;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.nurullah.model.Product;
 import org.nurullah.service.CategoryService;
+import org.nurullah.service.OrderService;
 import org.nurullah.service.ProductService;
 import org.nurullah.service.UserService;
 import pl.mjaron.etudes.Table;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CLIController {
+    private final Logger logger = LogManager.getLogger();
     Scanner scanner = new Scanner(System.in);
     UserService userService = new UserService();
     ProductService productService = new ProductService();
     CategoryService categoryService = new CategoryService();
+    OrderService orderService = new OrderService();
 
     public void createUser() {
         System.out.print("Name: ");
@@ -42,10 +49,10 @@ public class CLIController {
         System.out.println("Price: ");
         var price = scanner.nextDouble();
 
-        System.out.println("Kategorileri giriniz: ");
+        System.out.println("Enter the category IDs of this product (Seperate each id with commas) ");
         var categories = scanner.next();
-        String[] categoriesArray = categories.split(",");
-        var categoryIds = Arrays.stream(categoriesArray).map(Integer::parseInt).toList();
+        String[] categoryArray = categories.split(",");
+        var categoryIds = Arrays.stream(categoryArray).map(Integer::parseInt).toList();
 
         productService.createProduct(name, price, categoryIds);
     }
@@ -69,7 +76,33 @@ public class CLIController {
     }
 
     public void listProducts() {
-        var prducts = productService.listProducts();
-        Table.render(prducts, Product.class).run();
+        var products = productService.listProducts();
+        Table.render(products, Product.class).run();
+    }
+
+    public void createOrder(){
+        System.out.println("The ID of the owner of the order: ");
+        var userId = scanner.nextInt();
+
+        System.out.println("The status of the order: ");
+        var status = scanner.next();
+
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        System.out.println("Hom many products you want to add this order");
+        var numberOfOrders = scanner.nextInt();
+        for (int i = 0; i < numberOfOrders; i++) {
+            System.out.printf("""
+                    Enter the id of %s. product
+                    """, i+1);
+            var id = scanner.nextInt();
+            System.out.printf("""
+                    Enter the quantity of %s. product
+                    """, i+1);
+            var quantity = scanner.nextInt();
+            itemMap.put(id, quantity);
+        }
+
+        orderService.createOrder(userId, status, itemMap);
+        logger.info("Order successfully saved");
     }
 }

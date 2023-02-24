@@ -4,10 +4,8 @@ import java.util.Date;
 
 public class Category {
     private int id;
-    private String name;
-    private Date createdAt;
-
-    public Category(){}
+    private final String name;
+    private final Date createdAt;
 
     public Category(String name, Date createdAt) {
         this.name = name;
@@ -26,16 +24,8 @@ public class Category {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Date getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
     }
 
     @Override

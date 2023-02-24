@@ -9,14 +9,11 @@ import org.nurullah.repository.query.ProductQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class ProductRepository {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
-    private PreparedStatement preparedStatement;
-    private ResultSet resultSet;
 
     public ProductRepository(){
         connection = DBConnection.getConnection();
@@ -24,14 +21,14 @@ public class ProductRepository {
 
     public void saveProduct(Product product, List<Integer> categories){
         try {
-            preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
+            var preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
             preparedStatement.setTimestamp(3, new Timestamp(product.getCreatedAt().getTime()));
             preparedStatement.executeUpdate();
 
-            resultSet = preparedStatement.getGeneratedKeys();
+            var resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()){
                 product.setId(resultSet.getInt(1));
             }
@@ -50,7 +47,7 @@ public class ProductRepository {
 
     public void deleteProduct(int productId){
         try {
-            preparedStatement = connection.prepareStatement(ProductQuery.deleteProductQuery);
+            var preparedStatement = connection.prepareStatement(ProductQuery.deleteProductQuery);
             preparedStatement.setInt(1, productId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -61,8 +58,8 @@ public class ProductRepository {
     public List<Product> listProducts(){
         List<Product> products = new ArrayList<>();
         try {
-            preparedStatement = connection.prepareStatement(ProductQuery.listProducts);
-            resultSet = preparedStatement.executeQuery();
+            var preparedStatement = connection.prepareStatement(ProductQuery.listProducts);
+            var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
                 var product_id = resultSet.getInt("product_id");
