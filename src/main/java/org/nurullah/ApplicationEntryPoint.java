@@ -52,6 +52,7 @@ public class ApplicationEntryPoint {
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createCategory();
                 else if (selectedOperation == 2) operation.deleteCategory();
+                else if (selectedOperation == 4) operation.listCategories();
             } else if (selectedEntity == 4) {
                 System.out.println("""
                         Please select the operation you want to execute
@@ -62,6 +63,7 @@ public class ApplicationEntryPoint {
                         """);
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) operation.createOrder();
+                else if (selectedOperation == 2) operation.deleteOrder();
                 else if (selectedOperation == 4) operation.listOrders();
             } else System.out.println("Invalid Selection!");
         }

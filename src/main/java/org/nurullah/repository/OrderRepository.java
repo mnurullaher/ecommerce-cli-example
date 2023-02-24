@@ -4,7 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Order;
-import org.nurullah.model.Product;
 import org.nurullah.repository.query.OrderQuery;
 
 import java.sql.Connection;
@@ -51,6 +50,20 @@ public class OrderRepository {
         }
     }
 
+    public void deleteOrder(int orderId){
+        try {
+            var preparedStatement = connection.prepareStatement(OrderQuery.deleteFromOrderItems);
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.executeUpdate();
+
+            preparedStatement = connection.prepareStatement(OrderQuery.deleteOrderQuery);
+            preparedStatement.setInt(1, orderId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("ERROR while deleting order: " + e);
+        }
+    }
+
     public List<Order> listOrders(){
         List<Order> orders = new ArrayList<>();
         try {
@@ -84,15 +97,13 @@ public class OrderRepository {
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 var productName = resultSet.getString("product_name");
-                var quentity = resultSet.getInt("quantity");
+                var quantity = resultSet.getInt("quantity");
 
-                itemMap.put(productName, quentity);
+                itemMap.put(productName, quantity);
             }
-
         } catch (SQLException e) {
             logger.warn("ERROR while searching the items of the order with id " + orderId + ": " + e);
         }
-
         return itemMap;
     }
 }

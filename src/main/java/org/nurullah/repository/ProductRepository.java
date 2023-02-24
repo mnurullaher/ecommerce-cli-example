@@ -102,7 +102,7 @@ public class ProductRepository {
                 categories.add(category);
             }
         } catch (SQLException e) {
-            logger.warn("ERROR while seraching the categories of the product with ID: " + productId
+            logger.warn("ERROR while searching the categories of the product with ID: " + productId
             + "e: " + e);
         }
         return categories;

@@ -33,10 +33,4 @@ public class User {
     public Date getCreatedAt() {
         return createdAt;
     }
-
-    @Override
-    public String toString() {
-        return String.format("|UserId: %s| |UserName: %s| |UserEmail: %s| |CreatedAt: %s|",
-                getId(), getName(), getEmail(), getCreatedAt());
-    }
 }

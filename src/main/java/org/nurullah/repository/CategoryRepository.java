@@ -7,6 +7,8 @@ import org.nurullah.model.Category;
 import org.nurullah.repository.query.CategoryQuery;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CategoryRepository {
     private final Logger logger = LogManager.getLogger();
@@ -46,5 +48,26 @@ public class CategoryRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while deleting category: " + e);
         }
+    }
+
+    public List<Category> listCategories(){
+        List<Category> categories = new ArrayList<>();
+        try {
+            var preparedStatement = connection.prepareStatement(CategoryQuery.listCategoriesQuery);
+            var resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                var categoryID = resultSet.getInt("category_id");
+                var categoryName = resultSet.getString("category_name");
+                var createdAt = resultSet.getTimestamp("createdAt");
+
+                Category category = new Category(categoryName, createdAt);
+                category.setId(categoryID);
+                categories.add(category);
+            }
+        } catch (SQLException e) {
+            logger.warn("ERROR while listing categories: " + e);
+        }
+        return categories;
     }
 }
