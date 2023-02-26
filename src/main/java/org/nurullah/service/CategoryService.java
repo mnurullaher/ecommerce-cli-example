@@ -1,16 +1,16 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Category;
-import org.nurullah.repository.CategoryRepositoryJDBC;
+import org.nurullah.repository.CategoryRepository;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 public class CategoryService {
-    private final CategoryRepositoryJDBC categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepositoryJDBC categoryRepository){
+    public CategoryService(CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
     }
 

@@ -1,16 +1,16 @@
 package org.nurullah.service;
 
 import org.nurullah.model.User;
-import org.nurullah.repository.UserRepositoryJDBC;
+import org.nurullah.repository.UserRepository;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 public class UserService {
-    private final UserRepositoryJDBC userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepositoryJDBC userRepository){
+    public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 
