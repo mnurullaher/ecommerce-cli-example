@@ -11,7 +11,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepositoryJDBC {
+public class ProductRepositoryJDBC implements ProductRepository{
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 

@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OrderRepositoryJDBC {
+public class OrderRepositoryJDBC implements OrderRepository{
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 

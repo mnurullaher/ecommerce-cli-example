@@ -10,7 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepositoryJDBC {
+public class UserRepositoryJDBC implements UserRepository{
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
     private PreparedStatement preparedStatement;
