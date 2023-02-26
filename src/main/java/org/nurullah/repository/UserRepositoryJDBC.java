@@ -10,13 +10,13 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepository {
+public class UserRepositoryJDBC {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
     private PreparedStatement preparedStatement;
     private ResultSet resultSet;
 
-    public UserRepository() {
+    public UserRepositoryJDBC() {
         connection = DBConnection.getConnection();
     }
 

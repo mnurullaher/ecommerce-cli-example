@@ -1,7 +1,7 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Order;
-import org.nurullah.repository.OrderRepository;
+import org.nurullah.repository.OrderRepositoryJDBC;
 
 import java.time.Instant;
 import java.util.Date;
@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderService {
-    private final OrderRepository orderRepository;
+    private final OrderRepositoryJDBC orderRepository;
 
-    public OrderService(OrderRepository orderRepository){
+    public OrderService(OrderRepositoryJDBC orderRepository){
         this.orderRepository = orderRepository;
     }
 

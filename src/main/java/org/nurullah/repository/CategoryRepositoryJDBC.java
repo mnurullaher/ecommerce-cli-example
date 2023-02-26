@@ -10,11 +10,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryRepository {
+public class CategoryRepositoryJDBC {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 
-    public CategoryRepository(){
+    public CategoryRepositoryJDBC(){
         connection = DBConnection.getConnection();
     }
 

@@ -11,11 +11,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProductRepository {
+public class ProductRepositoryJDBC {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 
-    public ProductRepository(){
+    public ProductRepositoryJDBC(){
         connection = DBConnection.getConnection();
     }
 

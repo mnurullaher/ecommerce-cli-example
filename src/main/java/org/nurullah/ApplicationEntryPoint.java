@@ -1,9 +1,9 @@
 package org.nurullah;
 
-import org.nurullah.repository.CategoryRepository;
-import org.nurullah.repository.OrderRepository;
-import org.nurullah.repository.ProductRepository;
-import org.nurullah.repository.UserRepository;
+import org.nurullah.repository.CategoryRepositoryJDBC;
+import org.nurullah.repository.OrderRepositoryJDBC;
+import org.nurullah.repository.ProductRepositoryJDBC;
+import org.nurullah.repository.UserRepositoryJDBC;
 import org.nurullah.service.CategoryService;
 import org.nurullah.service.OrderService;
 import org.nurullah.service.ProductService;
@@ -15,10 +15,10 @@ public class ApplicationEntryPoint {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         CLIController controller = new CLIController(
-                new UserService(new UserRepository()),
-                new ProductService(new ProductRepository()),
-                new CategoryService(new CategoryRepository()),
-                new OrderService(new OrderRepository()));
+                new UserService(new UserRepositoryJDBC()),
+                new ProductService(new ProductRepositoryJDBC()),
+                new CategoryService(new CategoryRepositoryJDBC()),
+                new OrderService(new OrderRepositoryJDBC()));
         while (true) {
             System.out.println();
             System.out.println("""

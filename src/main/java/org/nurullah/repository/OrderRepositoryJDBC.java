@@ -15,11 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OrderRepository {
+public class OrderRepositoryJDBC {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 
-    public OrderRepository(){
+    public OrderRepositoryJDBC(){
         connection = DBConnection.getConnection();
     }
 

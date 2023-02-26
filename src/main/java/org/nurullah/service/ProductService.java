@@ -1,16 +1,16 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Product;
-import org.nurullah.repository.ProductRepository;
+import org.nurullah.repository.ProductRepositoryJDBC;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
 public class ProductService {
-    private final ProductRepository productRepository;
+    private final ProductRepositoryJDBC productRepository;
 
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepositoryJDBC productRepository){
         this.productRepository = productRepository;
     }
 
