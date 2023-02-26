@@ -8,7 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 public class CategoryService {
-    CategoryRepository categoryRepository = new CategoryRepository();
+    private final CategoryRepository categoryRepository;
+
+    public CategoryService(CategoryRepository categoryRepository){
+        this.categoryRepository = categoryRepository;
+    }
 
     public void createCategory(String name){
         Category category = new Category(name, Date.from(Instant.now()));

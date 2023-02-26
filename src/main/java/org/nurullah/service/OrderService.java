@@ -9,7 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 public class OrderService {
-    OrderRepository orderRepository = new OrderRepository();
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository){
+        this.orderRepository = orderRepository;
+    }
 
     public void createOrder(int userId, String status, Map<Integer, Integer> itemMap){
         Order order = new Order(userId, status, Date.from(Instant.now()));

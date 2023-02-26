@@ -8,7 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 public class UserService {
-    UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+    }
 
     public void createUser(String name, String email) {
         User user = new User(name, email, Date.from(Instant.now()));

@@ -8,7 +8,11 @@ import java.util.Date;
 import java.util.List;
 
 public class ProductService {
-    ProductRepository productRepository = new ProductRepository();
+    private final ProductRepository productRepository;
+
+    public ProductService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
 
     public void createProduct(String name, Double price, List<Integer> categories){
         Product product = new Product(name, price, Date.from(Instant.now()));
