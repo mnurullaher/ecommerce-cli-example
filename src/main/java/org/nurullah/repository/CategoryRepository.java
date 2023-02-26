@@ -6,9 +6,7 @@ import java.util.List;
 
 public interface CategoryRepository {
     void saveCategory(Category category);
-
     void deleteCategory(int categoryId);
-
     List<Category> listCategories();
 
 }

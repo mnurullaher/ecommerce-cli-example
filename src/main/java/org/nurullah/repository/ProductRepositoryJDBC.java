@@ -86,7 +86,7 @@ public class ProductRepositoryJDBC implements ProductRepository{
         return products;
     }
 
-    public List<Category> findCategoriesOfProduct(int productId) {
+    private List<Category> findCategoriesOfProduct(int productId) {
         List<Category> categories = new ArrayList<>();
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.listProductCategories);

@@ -88,7 +88,7 @@ public class OrderRepositoryJDBC implements OrderRepository{
         return orders;
     }
 
-    public Map<String , Integer> findItemsOfOrder(int orderId){
+    private Map<String , Integer> findItemsOfOrder(int orderId){
         Map<String, Integer> itemMap = new HashMap<>();
         try {
             var preparedStatement = connection.prepareStatement(OrderQuery.listOrderItemsQuery);
