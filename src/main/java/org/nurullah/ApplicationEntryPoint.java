@@ -14,10 +14,11 @@ import java.util.Scanner;
 public class ApplicationEntryPoint {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        CLIController userController = new CLIController(new UserService(new UserRepository()));
-        CLIController productController = new CLIController(new ProductService(new ProductRepository()));
-        CLIController orderController = new CLIController(new OrderService(new OrderRepository()));
-        CLIController categoryController = new CLIController(new CategoryService(new CategoryRepository()));
+        CLIController controller = new CLIController(
+                new UserService(new UserRepository()),
+                new ProductService(new ProductRepository()),
+                new CategoryService(new CategoryRepository()),
+                new OrderService(new OrderRepository()));
         while (true) {
             System.out.println();
             System.out.println("""
@@ -37,9 +38,9 @@ public class ApplicationEntryPoint {
                         [3]\tList
                         """);
                 var selectedOperation = scanner.nextInt();
-                if (selectedOperation == 1) userController.createUser();
-                else if (selectedOperation == 2) userController.deleteUser();
-                else if (selectedOperation == 3) userController.listUsers();
+                if (selectedOperation == 1) controller.createUser();
+                else if (selectedOperation == 2) controller.deleteUser();
+                else if (selectedOperation == 3) controller.listUsers();
                 else System.out.println("Invalid Operation");
             } else if (selectedEntity == 2) {
                 System.out.println("""
@@ -50,9 +51,9 @@ public class ApplicationEntryPoint {
                         [4]\tList
                         """);
                 var selectedOperation = scanner.nextInt();
-                if (selectedOperation == 1) productController.createProduct();
-                else if (selectedOperation == 2) productController.deleteProduct();
-                else if (selectedOperation == 4) productController.listProducts();
+                if (selectedOperation == 1) controller.createProduct();
+                else if (selectedOperation == 2) controller.deleteProduct();
+                else if (selectedOperation == 4) controller.listProducts();
             } else if (selectedEntity == 3) {
                 System.out.println("""
                         Please select the operation you want to execute
@@ -62,9 +63,9 @@ public class ApplicationEntryPoint {
                         [4]\tList
                         """);
                 var selectedOperation = scanner.nextInt();
-                if (selectedOperation == 1) categoryController.createCategory();
-                else if (selectedOperation == 2) categoryController.deleteCategory();
-                else if (selectedOperation == 4) categoryController.listCategories();
+                if (selectedOperation == 1) controller.createCategory();
+                else if (selectedOperation == 2) controller.deleteCategory();
+                else if (selectedOperation == 4) controller.listCategories();
             } else if (selectedEntity == 4) {
                 System.out.println("""
                         Please select the operation you want to execute
@@ -74,9 +75,9 @@ public class ApplicationEntryPoint {
                         [4]\tList
                         """);
                 var selectedOperation = scanner.nextInt();
-                if (selectedOperation == 1) orderController.createOrder();
-                else if (selectedOperation == 2) orderController.deleteOrder();
-                else if (selectedOperation == 4) orderController.listOrders();
+                if (selectedOperation == 1) controller.createOrder();
+                else if (selectedOperation == 2) controller.deleteOrder();
+                else if (selectedOperation == 4) controller.listOrders();
             } else System.out.println("Invalid Selection!");
         }
     }

@@ -20,25 +20,17 @@ import java.util.Scanner;
 public class CLIController {
     private final Logger logger = LogManager.getLogger();
     Scanner scanner = new Scanner(System.in);
-    private UserService userService;
-    private ProductService productService;
-    private CategoryService categoryService;
-    private OrderService orderService;
+    private final UserService userService;
+    private final ProductService productService;
+    private final CategoryService categoryService;
+    private final OrderService orderService;
 
-    public CLIController(UserService userService){
+    public CLIController(UserService userService, ProductService productService,
+                         CategoryService categoryService, OrderService orderService){
         this.userService = userService;
-    }
-
-    public CLIController(ProductService productService){
         this.productService = productService;
-    }
-
-    public CLIController(OrderService orderService){
-        this.orderService = orderService;
-    }
-
-    public CLIController(CategoryService categoryService){
         this.categoryService = categoryService;
+        this.orderService = orderService;
     }
 
     public void createUser() {
