@@ -17,7 +17,7 @@ public class Category {
     private String name;
     private Date createdAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Product> products = new HashSet<>();
 
     public Set<Product> getProducts() {

@@ -1,7 +1,6 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Product;
-import org.nurullah.repository.CategoryRepository;
 import org.nurullah.repository.ProductRepository;
 
 import java.time.Instant;

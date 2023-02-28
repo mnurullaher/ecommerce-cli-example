@@ -36,6 +36,7 @@ public class ApplicationEntryPoint {
 
             if (selectedEntity == 0) {
                 session.close();
+                factory.close();
                 return;
             }
             else if (selectedEntity == 1) {

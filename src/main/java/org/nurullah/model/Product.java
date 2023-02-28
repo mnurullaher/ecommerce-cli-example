@@ -16,7 +16,7 @@ public class Product {
     private String name;
     private double price;
     private Date createdAt;
-    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "products")
     Set<Category> categories = new HashSet<>();
 
     public Product() {
