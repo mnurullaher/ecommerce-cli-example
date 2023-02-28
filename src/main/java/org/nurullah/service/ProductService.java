@@ -1,6 +1,7 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Product;
+import org.nurullah.repository.CategoryRepository;
 import org.nurullah.repository.ProductRepository;
 
 import java.time.Instant;
@@ -14,9 +15,9 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public void createProduct(String name, Double price, List<Integer> categories){
+    public void createProduct(String name, Double price){
         Product product = new Product(name, price, Date.from(Instant.now()));
-        productRepository.saveProduct(product, categories);
+        productRepository.saveProduct(product);
     }
 
     public void deleteProduct(int productId){

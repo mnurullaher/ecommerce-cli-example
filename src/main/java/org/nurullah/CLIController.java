@@ -10,6 +10,7 @@ import org.nurullah.service.CategoryService;
 import org.nurullah.service.OrderService;
 import org.nurullah.service.ProductService;
 import org.nurullah.service.UserService;
+import pl.mjaron.etudes.Str;
 import pl.mjaron.etudes.Table;
 
 import java.util.Arrays;
@@ -63,12 +64,7 @@ public class CLIController {
         System.out.println("Price: ");
         var price = scanner.nextDouble();
 
-        System.out.println("Enter the category IDs of this product (Separate each id with commas) ");
-        var categories = scanner.next();
-        String[] categoryArray = categories.split(",");
-        var categoryIds = Arrays.stream(categoryArray).map(Integer::parseInt).toList();
-
-        productService.createProduct(name, price, categoryIds);
+        productService.createProduct(name, price);
         logger.info("The product " + name + " has successfully saved");
     }
 
@@ -82,8 +78,22 @@ public class CLIController {
     public void createCategory(){
         System.out.println("Name: ");
         var name= scanner.nextLine();
+
         categoryService.createCategory(name);
         logger.info("The category " + name + " has successfully saved");
+    }
+
+    public void addProductsToCategory(){
+        System.out.println("Specify the ID of the category you want to add products: ");
+        var categoryId = scanner.nextInt();
+
+        System.out.println("Enter the IDs of the products you want to add");
+        var products = scanner.next();
+        String[] productArray = products.split(",");
+        var productIds = Arrays.stream(productArray).map(Integer::parseInt).toList();
+
+        categoryService.addProductsToCategory(categoryId, productIds);
+        logger.info("Products added to the category");
     }
 
     public void deleteCategory(){

@@ -22,9 +22,8 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         try {
             var preparedStatement = connection.prepareStatement(CategoryQuery.saveCategoryQuery,
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, category.getId());
-            preparedStatement.setString(2, category.getName());
-            preparedStatement.setTimestamp(3, new Timestamp(category.getCreatedAt().getTime()));
+            preparedStatement.setString(1, category.getName());
+            preparedStatement.setTimestamp(2, new Timestamp(category.getCreatedAt().getTime()));
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
@@ -69,5 +68,10 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
             logger.warn("ERROR while listing categories: " + e);
         }
         return categories;
+    }
+
+    @Override
+    public void addProductsToCategory(int categoryId, List<Integer> productIds) {
+
     }
 }

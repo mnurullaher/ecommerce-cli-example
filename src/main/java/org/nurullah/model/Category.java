@@ -1,11 +1,34 @@
 package org.nurullah.model;
 
-import java.util.Date;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity(name = "categories")
 public class Category {
+    @Id
+    @Column(name = "category_id")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
-    private final String name;
-    private final Date createdAt;
+    private String name;
+    private Date createdAt;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Product> products = new HashSet<>();
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
+    }
+
+    public Category(){}
 
     public Category(String name, Date createdAt) {
         this.name = name;

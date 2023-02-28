@@ -9,7 +9,9 @@ import org.nurullah.repository.query.ProductQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProductRepositoryJDBC implements ProductRepository{
     private final Logger logger = LogManager.getLogger();
@@ -32,7 +34,6 @@ public class ProductRepositoryJDBC implements ProductRepository{
             if (resultSet.next()){
                 product.setId(resultSet.getInt(1));
             }
-
             preparedStatement = connection.prepareStatement(ProductQuery.saveProductCategoryQuery);
             for (Integer category : categories){
                 preparedStatement.setInt(1, product.getId());
@@ -43,6 +44,11 @@ public class ProductRepositoryJDBC implements ProductRepository{
         } catch (SQLException e) {
             logger.warn("ERROR while saving product: " + e);
         }
+    }
+
+    @Override
+    public void saveProduct(Product product) {
+
     }
 
     public void deleteProduct(int productId){
@@ -86,8 +92,8 @@ public class ProductRepositoryJDBC implements ProductRepository{
         return products;
     }
 
-    private List<Category> findCategoriesOfProduct(int productId) {
-        List<Category> categories = new ArrayList<>();
+    private Set<Category> findCategoriesOfProduct(int productId) {
+        Set<Category> categories = new HashSet<>();
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.listProductCategories);
             preparedStatement.setInt(1, productId);

@@ -1,15 +1,26 @@
 package org.nurullah.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity(name = "products")
 public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
+    @GenericGenerator(name = "native", strategy = "native")
     private int id;
-    private final String name;
-    private final double price;
-    private final Date createdAt;
-    private List<Category> categories;
+    private String name;
+    private double price;
+    private Date createdAt;
+    @ManyToMany(mappedBy = "products", cascade = CascadeType.ALL)
+    Set<Category> categories = new HashSet<>();
+
+    public Product() {
+    }
 
     public Product(String name, double price, Date createdAt) {
         this.name = name;
@@ -37,18 +48,16 @@ public class Product {
         return createdAt;
     }
 
-    public List<Category> getCategories() {
+    public Set<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public void setCategories(Set<Category> categories) {
         this.categories = categories;
     }
 
     @Override
     public String toString() {
-        var categoriesStr = getCategories().stream().map(Category::getName).collect(Collectors.joining(","));
-        return String.format("|Id: %s| Name: %s Price: %s Categories: %s CreatedAt: %s",
-                getId(), getName(), getPrice(), categoriesStr, getCreatedAt());
+        return name;
     }
 }
