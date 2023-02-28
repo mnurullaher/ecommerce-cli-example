@@ -27,6 +27,7 @@ public class CategoryRepositoryHB implements CategoryRepository{
             var product = session.find(Product.class, id);
             category.getProducts().add(product);
         }
+        session.persist(category);
         txn.commit();
     }
 
@@ -40,11 +41,8 @@ public class CategoryRepositoryHB implements CategoryRepository{
 
     @Override
     public List<Category> listCategories() {
-        var txn = session.beginTransaction();
-        var categories =  session.createQuery(
+        return session.createQuery(
                         "SELECT c FROM categories c", Category.class)
                 .getResultList();
-        txn.commit();
-        return categories;
     }
 }

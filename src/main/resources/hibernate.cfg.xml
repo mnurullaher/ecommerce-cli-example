@@ -10,7 +10,7 @@
         <property name="hibernate.connection.password">Nurullah.1175</property>
         <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
-<!--        <mapping resource="Event.cfg.xml"/>-->
+
         <mapping class="org.nurullah.model.Category" />
         <mapping class="org.nurullah.model.Product" />
     </session-factory>

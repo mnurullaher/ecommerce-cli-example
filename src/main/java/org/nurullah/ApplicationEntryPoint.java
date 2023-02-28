@@ -26,6 +26,7 @@ public class ApplicationEntryPoint {
                 new OrderService(new OrderRepositoryJDBC()));
         while (true) {
             System.out.println();
+            session.clear();
             System.out.println("""
                     Please select the entity that you want to working on ("0" for exit)
                     [1]\tUsers
