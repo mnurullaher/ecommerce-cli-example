@@ -24,7 +24,8 @@ public class CategoryRepositoryHB implements CategoryRepository{
         var txn = session.beginTransaction();
         Category category = session.find(Category.class, categoryId);
         for (var id : productIds){
-            Product product = session.find(Product.class, id);
+            var product = session.find(Product.class, id);
+            product.getCategories().add(category);
             category.getProducts().add(product);
         }
         txn.commit();
@@ -32,10 +33,16 @@ public class CategoryRepositoryHB implements CategoryRepository{
 
     @Override
     public void deleteCategory(int categoryId) {
-        session.beginTransaction();
+        var txn = session.beginTransaction();
         Category category = session.find(Category.class, categoryId);
+        session.createQuery(
+                        "SELECT p FROM products p", Product.class)
+                .getResultList()
+                .stream().filter(c->c.getCategories().contains(category))
+                .forEach(c->c.getCategories().remove(category));
+        category.getProducts().clear();
         session.remove(category);
-        session.getTransaction().commit();
+        txn.commit();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.nurullah.repository;
 
 import org.hibernate.Session;
+import org.nurullah.model.Category;
 import org.nurullah.model.Product;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class ProductRepositoryHB implements ProductRepository{
     public ProductRepositoryHB(Session session){
         this.session = session;
     }
+
     @Override
     public void saveProduct(Product product, List<Integer> categories) {
 
@@ -25,12 +27,22 @@ public class ProductRepositoryHB implements ProductRepository{
 
     @Override
     public void deleteProduct(int productId) {
-
+        var txn = session.beginTransaction();
+        Product product = session.find(Product.class, productId);
+        session.createQuery(
+                        "SELECT c FROM categories c", Category.class)
+                .getResultList()
+                .stream().filter(c->c.getProducts().contains(product))
+                .forEach(c->c.getProducts().remove(product));
+        product.getCategories().clear();
+        session.remove(product);
+        txn.commit();
     }
 
     @Override
     public List<Product> listProducts() {
-        return null;
+        return session.createQuery("SELECT p FROM products p", Product.class)
+                .getResultList();
     }
 
 }

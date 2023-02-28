@@ -59,6 +59,7 @@ public class ApplicationEntryPoint {
                         [4]\tList
                         """);
                 var selectedOperation = scanner.nextInt();
+                scanner.nextLine();
                 if (selectedOperation == 1) controller.createProduct();
                 else if (selectedOperation == 2) controller.deleteProduct();
                 else if (selectedOperation == 4) controller.listProducts();

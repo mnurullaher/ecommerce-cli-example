@@ -20,7 +20,6 @@ public class ProductRepositoryJDBC implements ProductRepository{
     public ProductRepositoryJDBC(){
         connection = DBConnection.getConnection();
     }
-
     public void saveProduct(Product product, List<Integer> categories){
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
