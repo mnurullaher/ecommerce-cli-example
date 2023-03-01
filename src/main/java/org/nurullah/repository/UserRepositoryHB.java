@@ -29,6 +29,7 @@ public class UserRepositoryHB implements UserRepository{
 
     @Override
     public List<User> listUsers() {
-        return null;
+        return session.createQuery("select u from users u", User.class)
+            .list();
     }
 }

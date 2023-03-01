@@ -3,7 +3,6 @@ package org.nurullah.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,29 +17,10 @@ public class Product {
     private double price;
     private Date createdAt;
     @ManyToMany(mappedBy = "products")
-    Set<Category> categories = new HashSet<>();
+    private Set<Category> categories = new HashSet<>();
 
     @ManyToMany(mappedBy = "products")
-    Set<Order> orders = new HashSet<>();
-
-    public void removeOrder(Order order){
-        orders.remove(order);
-        order.getProducts().remove(this);
-    }
-
-    public void removeCategory(Category category){
-        categories.remove(category);
-        category.getProducts().remove(this);
-    }
-
-    public void remove(){
-        for (Category category : new ArrayList<>(categories)){
-            removeCategory(category);
-        }
-        for (Order order : new ArrayList<>(orders)){
-            removeOrder(order);
-        }
-    }
+    private Set<Order> orders = new HashSet<>();
 
     public Product() {
     }
@@ -49,6 +29,27 @@ public class Product {
         this.name = name;
         this.price = price;
         this.createdAt = createdAt;
+    }
+
+    public void remove(){
+        detachFromAllCategories();
+        detachFromAllOrders();
+    }
+
+    private void detachFromAllOrders() {
+        for (var it = orders.iterator(); it.hasNext();) {
+            var order = it.next();
+            order.getProducts().remove(this);
+            it.remove();
+        }
+    }
+
+    private void detachFromAllCategories() {
+        for (var it = categories.iterator(); it.hasNext();) {
+            var category = it.next();
+            category.getProducts().remove(this);
+            it.remove();
+        }
     }
 
     public int getId() {
@@ -90,5 +91,9 @@ public class Product {
     @Override
     public String toString() {
         return name;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
     }
 }
