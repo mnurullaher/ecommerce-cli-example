@@ -20,10 +20,10 @@ public class ApplicationEntryPoint {
                 .buildSessionFactory();
         var session = factory.openSession();
         CLIController controller = new CLIController(
-                new UserService(new UserRepositoryJDBC()),
+                new UserService(new UserRepositoryHB(session)),
                 new ProductService(new ProductRepositoryHB(session)),
                 new CategoryService(new CategoryRepositoryHB(session)),
-                new OrderService(new OrderRepositoryJDBC()));
+                new OrderService(new OrderRepositoryHB(session)));
         while (true) {
             System.out.println();
             session.clear();

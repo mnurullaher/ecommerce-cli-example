@@ -15,9 +15,9 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public void createOrder(int userId, String status, Map<Integer, Integer> itemMap){
+    public void createOrder(int userId, String status){
         Order order = new Order(userId, status, Date.from(Instant.now()));
-        orderRepository.saveOrder(order, itemMap);
+        orderRepository.saveOrder(order, userId);
     }
 
     public void deleteOrder(int orderId){

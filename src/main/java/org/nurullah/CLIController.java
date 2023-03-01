@@ -142,21 +142,21 @@ public class CLIController {
         System.out.println("The status of the order: ");
         var status = scanner.nextLine();
 
-        Map<Integer, Integer> itemMap = new HashMap<>();
-        System.out.println("Hom many products you want to add this order");
-        var numberOfOrders = scanner.nextInt();
-        for (int i = 0; i < numberOfOrders; i++) {
-            System.out.printf("""
-                    Enter the id of %s. product
-                    """, i+1);
-            var id = scanner.nextInt();
-            System.out.printf("""
-                    Enter the quantity of %s. product
-                    """, i+1);
-            var quantity = scanner.nextInt();
-            itemMap.put(id, quantity);
-        }
-        orderService.createOrder(userId, status, itemMap);
+//        Map<Integer, Integer> itemMap = new HashMap<>();
+//        System.out.println("Hom many products you want to add this order");
+//        var numberOfOrders = scanner.nextInt();
+//        for (int i = 0; i < numberOfOrders; i++) {
+//            System.out.printf("""
+//                    Enter the id of %s. product
+//                    """, i+1);
+//            var id = scanner.nextInt();
+//            System.out.printf("""
+//                    Enter the quantity of %s. product
+//                    """, i+1);
+//            var quantity = scanner.nextInt();
+//            itemMap.put(id, quantity);
+//      }
+        orderService.createOrder(userId, status);
         logger.info("Order successfully saved");
     }
 

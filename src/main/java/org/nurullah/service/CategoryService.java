@@ -1,15 +1,11 @@
 package org.nurullah.service;
 
 import org.nurullah.model.Category;
-import org.nurullah.model.Product;
 import org.nurullah.repository.CategoryRepository;
-import org.nurullah.repository.ProductRepository;
 
 import java.time.Instant;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class CategoryService {
     private final CategoryRepository categoryRepository;

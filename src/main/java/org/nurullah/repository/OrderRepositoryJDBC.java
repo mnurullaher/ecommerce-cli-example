@@ -88,6 +88,11 @@ public class OrderRepositoryJDBC implements OrderRepository{
         return orders;
     }
 
+    @Override
+    public void saveOrder(Order order, int userId) {
+
+    }
+
     private Map<String , Integer> findItemsOfOrder(int orderId){
         Map<String, Integer> itemMap = new HashMap<>();
         try {
