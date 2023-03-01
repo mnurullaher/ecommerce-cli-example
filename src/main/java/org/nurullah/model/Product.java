@@ -20,6 +20,14 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     Set<Category> categories = new HashSet<>();
 
+    @ManyToMany(mappedBy = "products")
+    Set<Order> orders = new HashSet<>();
+
+    public void removeOrder(Order order){
+        orders.remove(order);
+        order.getProducts().remove(this);
+    }
+
     public void removeCategory(Category category){
         categories.remove(category);
         category.getProducts().remove(this);
@@ -28,6 +36,9 @@ public class Product {
     public void remove(){
         for (Category category : new ArrayList<>(categories)){
             removeCategory(category);
+        }
+        for (Order order : new ArrayList<>(orders)){
+            removeOrder(order);
         }
     }
 

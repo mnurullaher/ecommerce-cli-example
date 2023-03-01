@@ -2,6 +2,7 @@ package org.nurullah.repository;
 
 import org.hibernate.Session;
 import org.nurullah.model.Order;
+import org.nurullah.model.Product;
 import org.nurullah.model.User;
 
 import java.util.List;
@@ -24,6 +25,17 @@ public class OrderRepositoryHB implements OrderRepository{
         var txn = session.beginTransaction();
         var user = session.find(User.class, userId);
         user.addOrder(order);
+        session.persist(order);
+        txn.commit();
+    }
+
+    public void addProductsToOrder(int orderId, List<Integer> productIds){
+        var txn = session.beginTransaction();
+        Order order = session.find(Order.class, orderId);
+        for (var id : productIds){
+            var product = session.find(Product.class, id);
+            order.getProducts().add(product);
+        }
         session.persist(order);
         txn.commit();
     }

@@ -93,6 +93,11 @@ public class OrderRepositoryJDBC implements OrderRepository{
 
     }
 
+    @Override
+    public void addProductsToOrder(int orderId, List<Integer> productIds) {
+
+    }
+
     private Map<String , Integer> findItemsOfOrder(int orderId){
         Map<String, Integer> itemMap = new HashMap<>();
         try {

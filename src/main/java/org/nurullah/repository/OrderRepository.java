@@ -9,5 +9,6 @@ public interface OrderRepository {
     void saveOrder(Order order, Map<Integer, Integer> itemMap);
     void deleteOrder(int orderId);
     List<Order> listOrders();
-    public void saveOrder(Order order, int userId);
+    void saveOrder(Order order, int userId);
+    void addProductsToOrder(int orderId, List<Integer> productIds);
 }

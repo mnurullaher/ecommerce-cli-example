@@ -3,9 +3,7 @@ package org.nurullah.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity (name = "orders")
 public class Order {
@@ -22,6 +20,10 @@ public class Order {
     private Date createdAt;
     @Transient
     private Map<String, Integer> items;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    Set<Product> products = new HashSet<>();
+
 
     public Order(){}
 
@@ -69,6 +71,14 @@ public class Order {
 
     public Map<String, Integer> getItems() {
         return items;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Product> products) {
+        this.products = products;
     }
 
     @Override

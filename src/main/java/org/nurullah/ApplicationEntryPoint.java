@@ -89,11 +89,13 @@ public class ApplicationEntryPoint {
                         [2]\tDelete
                         [3]\tUpdate
                         [4]\tList
+                        [5]\tAdd products to order
                         """);
                 var selectedOperation = scanner.nextInt();
                 if (selectedOperation == 1) controller.createOrder();
                 else if (selectedOperation == 2) controller.deleteOrder();
                 else if (selectedOperation == 4) controller.listOrders();
+                else if (selectedOperation == 5) controller.addProductsToOrder();
             } else System.out.println("Invalid Selection!");
         }
     }

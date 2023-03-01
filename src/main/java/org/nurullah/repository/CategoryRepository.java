@@ -9,5 +9,5 @@ public interface CategoryRepository {
     void deleteCategory(int categoryId);
     List<Category> listCategories();
     void addProductsToCategory(int categoryId, List<Integer> productIds);
-    public void  updateCategory(int categoryId, String newName);
+    void  updateCategory(int categoryId, String newName);
 }
