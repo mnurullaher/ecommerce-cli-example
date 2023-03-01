@@ -31,6 +31,10 @@ public class CategoryService {
         categoryRepository.deleteCategory(categoryId);
     }
 
+    public void updateCategory(int categoryId, String newName){
+        categoryRepository.updateCategory(categoryId, newName);
+    }
+
     public List<Category> listCategories(){
         return categoryRepository.listCategories();
     }

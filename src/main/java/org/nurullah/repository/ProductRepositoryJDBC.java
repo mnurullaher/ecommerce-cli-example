@@ -91,6 +91,11 @@ public class ProductRepositoryJDBC implements ProductRepository{
         return products;
     }
 
+    @Override
+    public void updateProduct(int productId, String newName, double newPrice) {
+
+    }
+
     private Set<Category> findCategoriesOfProduct(int productId) {
         Set<Category> categories = new HashSet<>();
         try {

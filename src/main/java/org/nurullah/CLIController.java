@@ -74,6 +74,18 @@ public class CLIController {
         logger.info("The product with id number " + id + " has successfully deleted");
     }
 
+    public void updateProduct(){
+        System.out.print("The ID of the product you want to update: ");
+        var id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("New name: ");
+        var newName = scanner.nextLine();
+        System.out.print("New price: ");
+        var newPrice = scanner.nextDouble();
+        productService.updateProduct(id, newName, newPrice);
+        logger.info("Product updated successfully.");
+    }
+
     public void createCategory(){
         System.out.println("Name: ");
         var name= scanner.nextLine();
@@ -100,6 +112,16 @@ public class CLIController {
         var id = scanner.nextInt();
         categoryService.deleteCategory(id);
         logger.info("Category with id number " + id + " has successfully deleted");
+    }
+
+    public void updateCategory(){
+        System.out.print("The ID of the category you want to update: ");
+        var id = scanner.nextInt();
+        scanner.nextLine();
+        System.out.print("New name: ");
+        var newName = scanner.nextLine();
+        categoryService.updateCategory(id, newName);
+        logger.info("Category updated successfully.");
     }
 
     public void listCategories(){

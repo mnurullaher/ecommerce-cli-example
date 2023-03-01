@@ -74,4 +74,9 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
     public void addProductsToCategory(int categoryId, List<Integer> productIds) {
 
     }
+
+    @Override
+    public void updateCategory(int categoryId, String newName) {
+
+    }
 }

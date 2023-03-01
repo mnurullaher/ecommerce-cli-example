@@ -64,6 +64,7 @@ public class ApplicationEntryPoint {
                 scanner.nextLine();
                 if (selectedOperation == 1) controller.createProduct();
                 else if (selectedOperation == 2) controller.deleteProduct();
+                else if (selectedOperation == 3) controller.updateProduct();
                 else if (selectedOperation == 4) controller.listProducts();
             } else if (selectedEntity == 3) {
                 System.out.println("""
@@ -78,6 +79,7 @@ public class ApplicationEntryPoint {
                 scanner.nextLine();
                 if (selectedOperation == 1) controller.createCategory();
                 else if (selectedOperation == 2) controller.deleteCategory();
+                else if (selectedOperation == 3) controller.updateCategory();
                 else if (selectedOperation == 4) controller.listCategories();
                 else if (selectedOperation == 5) controller.addProductsToCategory();
             } else if (selectedEntity == 4) {

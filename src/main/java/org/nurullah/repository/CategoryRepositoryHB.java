@@ -39,6 +39,13 @@ public class CategoryRepositoryHB implements CategoryRepository{
         txn.commit();
     }
 
+    public void  updateCategory(int categoryId, String newName){
+        var txn = session.beginTransaction();
+        Category category = session.find(Category.class, categoryId);
+        category.setName(newName);
+        session.persist(category);
+        txn.commit();
+    }
     @Override
     public List<Category> listCategories() {
         return session.createQuery(

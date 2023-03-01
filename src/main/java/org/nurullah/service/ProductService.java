@@ -23,6 +23,10 @@ public class ProductService {
         productRepository.deleteProduct(productId);
     }
 
+    public void updateProduct(int productId, String newName, double newPrice){
+        productRepository.updateProduct(productId, newName, newPrice);
+    }
+
     public List<Product> listProducts(){
         return productRepository.listProducts();
     }

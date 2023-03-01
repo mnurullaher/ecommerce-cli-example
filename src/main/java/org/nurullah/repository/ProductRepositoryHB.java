@@ -26,17 +26,15 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
         product.remove();
         session.remove(product);
         txn.commit();
+    }
 
-//        var txn = session.beginTransaction();
-//        Product product1 = session.find(Product.class, productId);
-//        product1.re
-
-//        doInTransaction(session -> {
-//            Product product1 =
-//                    getById(session, productId);
-//            product1.remove();
-//            session.delete(product1);
-//        });
+    public void updateProduct(int productId, String newName, double newPrice){
+        var txn = session.beginTransaction();
+        Product product = session.find(Product.class, productId);
+        product.setName(newName);
+        product.setPrice(newPrice);
+        session.persist(product);
+        txn.commit();
     }
 
     @Override
