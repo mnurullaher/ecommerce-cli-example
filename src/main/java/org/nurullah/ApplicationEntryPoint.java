@@ -8,11 +8,15 @@ import org.nurullah.service.OrderService;
 import org.nurullah.service.ProductService;
 import org.nurullah.service.UserService;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class ApplicationEntryPoint {
+
+    private static Scanner scanner;
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        scanner = new Scanner(System.in);
         var registry = new StandardServiceRegistryBuilder()
                 .configure()
                 .build();
@@ -27,12 +31,10 @@ public class ApplicationEntryPoint {
         while (true) {
             System.out.println();
             session.clear();
-            System.out.println("""
+            System.out.print("""
                     Please select the entity that you want to working on ("0" for exit)
-                    [1]\tUsers
-                    [2]\tProducts
-                    [3]\tCategories
-                    [4]\tOrders""");
+                    [1]Users [2]Products [3]Categories [4]Orders Choice:"""
+            );
             var selectedEntity = scanner.nextInt();
 
             if (selectedEntity == 0) {
@@ -41,63 +43,53 @@ public class ApplicationEntryPoint {
                 return;
             }
             else if (selectedEntity == 1) {
-                System.out.println("""
-                        Please select the operation you want to execute
-                        [1]\tCreate
-                        [2]\tDelete
-                        [3]\tList
-                        """);
-                var selectedOperation = scanner.nextInt();
+                var selectedOperation = getChoice(
+                    List.of("Create", "Delete", "List")
+                );
                 if (selectedOperation == 1) controller.createUser();
                 else if (selectedOperation == 2) controller.deleteUser();
                 else if (selectedOperation == 3) controller.listUsers();
                 else System.out.println("Invalid Operation");
             } else if (selectedEntity == 2) {
-                System.out.println("""
-                        Please select the operation you want to execute
-                        [1]\tCreate
-                        [2]\tDelete
-                        [3]\tUpdate
-                        [4]\tList
-                        """);
-                var selectedOperation = scanner.nextInt();
-                scanner.nextLine();
+                var selectedOperation = getChoice(
+                    List.of("Create", "Delete", "Update", "List")
+                );
                 if (selectedOperation == 1) controller.createProduct();
                 else if (selectedOperation == 2) controller.deleteProduct();
                 else if (selectedOperation == 3) controller.updateProduct();
                 else if (selectedOperation == 4) controller.listProducts();
             } else if (selectedEntity == 3) {
-                System.out.println("""
-                        Please select the operation you want to execute
-                        [1]\tCreate
-                        [2]\tDelete
-                        [3]\tUpdate
-                        [4]\tList
-                        [5]\tSet products of category
-                        """);
-                var selectedOperation = scanner.nextInt();
-                scanner.nextLine();
+                var selectedOperation = getChoice(
+                    List.of("Create", "Delete", "Update", "List", "Set products")
+                );
                 if (selectedOperation == 1) controller.createCategory();
                 else if (selectedOperation == 2) controller.deleteCategory();
                 else if (selectedOperation == 3) controller.updateCategory();
                 else if (selectedOperation == 4) controller.listCategories();
                 else if (selectedOperation == 5) controller.addProductsToCategory();
             } else if (selectedEntity == 4) {
-                System.out.println("""
-                        Please select the operation you want to execute
-                        [1]\tCreate
-                        [2]\tDelete
-                        [3]\tUpdate
-                        [4]\tList
-                        [5]\tAdd products to order
-                        """);
-                var selectedOperation = scanner.nextInt();
+                var selectedOperation = getChoice(
+                    List.of("Create", "Delete", "Update", "List", "Add products")
+                );
                 if (selectedOperation == 1) controller.createOrder();
                 else if (selectedOperation == 2) controller.deleteOrder();
                 else if (selectedOperation == 4) controller.listOrders();
                 else if (selectedOperation == 5) controller.addProductsToOrder();
             } else System.out.println("Invalid Selection!");
         }
+    }
+
+    private static int getChoice(List<String> choices) {
+        System.out.println("Please select the operation you want to execute");
+        var choicesStr = new StringBuilder();
+        var index = 1;
+        for (var choice : choices) {
+            choicesStr.append("[%s]%s ".formatted(index++, choice));
+        }
+        choicesStr.append("Choice: ");
+        System.out.print(choicesStr);
+        return scanner.nextInt();
+
     }
 
 }
