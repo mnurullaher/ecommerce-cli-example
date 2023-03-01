@@ -3,6 +3,7 @@ package org.nurullah.model;
 import jakarta.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +19,17 @@ public class Product {
     private Date createdAt;
     @ManyToMany(mappedBy = "products")
     Set<Category> categories = new HashSet<>();
+
+    public void removeCategory(Category category){
+        categories.remove(category);
+        category.getProducts().remove(this);
+    }
+
+    public void remove(){
+        for (Category category : new ArrayList<>(categories)){
+            removeCategory(category);
+        }
+    }
 
     public Product() {
     }

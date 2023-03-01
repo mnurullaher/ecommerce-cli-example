@@ -23,8 +23,20 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
     public void deleteProduct(int productId) {
         var txn = session.beginTransaction();
         Product product = session.find(Product.class, productId);
+        product.remove();
         session.remove(product);
         txn.commit();
+
+//        var txn = session.beginTransaction();
+//        Product product1 = session.find(Product.class, productId);
+//        product1.re
+
+//        doInTransaction(session -> {
+//            Product product1 =
+//                    getById(session, productId);
+//            product1.remove();
+//            session.delete(product1);
+//        });
     }
 
     @Override
