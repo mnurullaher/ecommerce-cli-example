@@ -19,9 +19,6 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private Set<Category> categories = new HashSet<>();
 
-    @ManyToMany(mappedBy = "products")
-    private Set<Order> orders = new HashSet<>();
-
     public Product() {
     }
 
@@ -33,15 +30,6 @@ public class Product {
 
     public void remove(){
         detachFromAllCategories();
-        detachFromAllOrders();
-    }
-
-    private void detachFromAllOrders() {
-        for (var it = orders.iterator(); it.hasNext();) {
-            var order = it.next();
-            order.getProducts().remove(this);
-            it.remove();
-        }
     }
 
     private void detachFromAllCategories() {
@@ -93,7 +81,4 @@ public class Product {
         return name;
     }
 
-    public Set<Order> getOrders() {
-        return orders;
-    }
 }

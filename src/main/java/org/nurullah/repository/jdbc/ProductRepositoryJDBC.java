@@ -1,11 +1,12 @@
-package org.nurullah.repository;
+package org.nurullah.repository.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Category;
 import org.nurullah.model.Product;
-import org.nurullah.repository.query.ProductQuery;
+import org.nurullah.repository.ProductRepository;
+import org.nurullah.repository.jdbc.query.ProductQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ProductRepositoryJDBC implements ProductRepository{
+public class ProductRepositoryJDBC implements ProductRepository {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 

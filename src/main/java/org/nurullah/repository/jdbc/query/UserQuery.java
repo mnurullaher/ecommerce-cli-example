@@ -1,4 +1,4 @@
-package org.nurullah.repository.query;
+package org.nurullah.repository.jdbc.query;
 
 public class UserQuery {
     public static final String saveUserQuery = "INSERT INTO users(user_name, user_email, createdAt) " +

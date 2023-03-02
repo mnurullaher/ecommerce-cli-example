@@ -1,10 +1,11 @@
-package org.nurullah.repository;
+package org.nurullah.repository.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Order;
-import org.nurullah.repository.query.OrderQuery;
+import org.nurullah.repository.OrderRepository;
+import org.nurullah.repository.jdbc.query.OrderQuery;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class OrderRepositoryJDBC implements OrderRepository{
+public class OrderRepositoryJDBC implements OrderRepository {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
 
@@ -28,8 +29,7 @@ public class OrderRepositoryJDBC implements OrderRepository{
             var preparedStatement = connection.prepareStatement(OrderQuery.saveOrderQuery,
                     Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, order.getUserId());
-            preparedStatement.setString(2, order.getStatus());
-            preparedStatement.setTimestamp(3, new Timestamp(order.getCreatedAt().getTime()));
+            preparedStatement.setTimestamp(2, new Timestamp(order.getCreatedAt().getTime()));
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
@@ -76,7 +76,7 @@ public class OrderRepositoryJDBC implements OrderRepository{
                 var status = resultSet.getString("status");
                 var createdAt = resultSet.getTimestamp("createdAt");
 
-                Order order = new Order(userId, status, createdAt);
+                Order order = new Order(userId, createdAt);
                 order.setId(orderId);
                 order.setItems(findItemsOfOrder(orderId));
                 orders.add(order);
@@ -89,12 +89,7 @@ public class OrderRepositoryJDBC implements OrderRepository{
     }
 
     @Override
-    public void saveOrder(Order order, int userId) {
-
-    }
-
-    @Override
-    public void addProductsToOrder(int orderId, List<Integer> productIds) {
+    public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap) {
 
     }
 

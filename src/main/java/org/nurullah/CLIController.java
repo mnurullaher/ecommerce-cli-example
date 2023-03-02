@@ -13,6 +13,8 @@ import org.nurullah.service.UserService;
 import pl.mjaron.etudes.Table;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CLIController {
@@ -84,25 +86,17 @@ public class CLIController {
         logger.info("Product updated successfully.");
     }
 
+    public void listProducts() {
+        var products = productService.listProducts();
+        Table.render(products, Product.class).run();
+    }
+
     public void createCategory(){
         System.out.println("Name: ");
         var name= scanner.nextLine();
 
         categoryService.createCategory(name);
         logger.info("The category " + name + " has successfully saved");
-    }
-
-    public void addProductsToCategory(){
-        System.out.println("Specify the ID of the category you want to add products: ");
-        var categoryId = scanner.nextInt();
-
-        System.out.println("Enter the IDs of the products you want to add");
-        var products = scanner.next();
-        String[] productArray = products.split(",");
-        var productIds = Arrays.stream(productArray).map(Integer::parseInt).toList();
-
-        categoryService.addProductsToCategory(categoryId, productIds);
-        logger.info("Products added to the category");
     }
 
     public void deleteCategory(){
@@ -127,9 +121,17 @@ public class CLIController {
         Table.render(categories, Category.class).run();
     }
 
-    public void listProducts() {
-        var products = productService.listProducts();
-        Table.render(products, Product.class).run();
+    public void addProductsToCategory(){
+        System.out.println("Specify the ID of the category you want to add products: ");
+        var categoryId = scanner.nextInt();
+
+        System.out.println("Enter the IDs of the products you want to add");
+        var products = scanner.next();
+        String[] productArray = products.split(",");
+        var productIds = Arrays.stream(productArray).map(Integer::parseInt).toList();
+
+        categoryService.addProductsToCategory(categoryId, productIds);
+        logger.info("Products added to the category");
     }
 
     public void createOrder(){
@@ -137,10 +139,21 @@ public class CLIController {
         var userId = scanner.nextInt();
         scanner.nextLine();
 
-        System.out.println("The status of the order: ");
-        var status = scanner.nextLine();
-
-        orderService.createOrder(userId, status);
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        System.out.print("Hom many products you want to add this order: ");
+        var numberOfItems = scanner.nextInt();
+        for (int i = 0; i < numberOfItems; i++) {
+            System.out.printf("""
+                    Enter the id of %s. product
+                    """, i+1);
+            var productId = scanner.nextInt();
+            System.out.printf("""
+                    Enter the quantity of %s. product
+                    """, i+1);
+            var quantity = scanner.nextInt();
+            itemMap.put(productId, quantity);
+      }
+        orderService.createOrder(userId,itemMap);
         logger.info("Order successfully saved");
     }
 
@@ -151,19 +164,31 @@ public class CLIController {
         logger.info("Order with id number " + id + " successfully deleted");
     }
 
-    public void addProductsToOrder(){
-        System.out.print("Enter the ID of the order you want to add product: ");
-        var categoryId = scanner.nextInt();
-        scanner.nextLine();
-        System.out.print("Enter the IDs of the products you want to add: ");
-        var products = scanner.next();
-        var productArray = products.split(",");
-        var productIds = Arrays.stream(productArray).map(Integer::parseInt).toList();
-        orderService.addProductsToOrder(categoryId, productIds);
-    }
-
     public void listOrders() {
         var orders = orderService.listOrders();
         Table.render(orders, Order.class).run();
+    }
+
+    public void addProductsToOrder(){
+        System.out.print("The ID of the order you want to add products: ");
+        var orderId = scanner.nextInt();
+
+        Map<Integer, Integer> itemMap = new HashMap<>();
+        System.out.println("Hom many products you want to add this order");
+        var numberOfItems = scanner.nextInt();
+        for (int i = 0; i < numberOfItems; i++) {
+            System.out.printf("""
+                    Enter the id of %s. product
+                    """, i+1);
+            var productId = scanner.nextInt();
+            System.out.printf("""
+                    Enter the quantity of %s. product
+                    """, i+1);
+            var quantity = scanner.nextInt();
+            itemMap.put(productId, quantity);
+        }
+        orderService.addProductsToOrder(orderId, itemMap);
+
+        logger.info("Order successfully updated.");
     }
 }

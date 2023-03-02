@@ -1,4 +1,4 @@
-package org.nurullah.repository.query;
+package org.nurullah.repository.jdbc.query;
 
 public class CategoryQuery {
     public static final String saveCategoryQuery = "INSERT INTO categories(category_name, createdAt) " +

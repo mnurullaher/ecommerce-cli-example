@@ -11,34 +11,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
     @GenericGenerator(name = "native", strategy = "native")
     private int id;
-    @Transient
-    private int userId;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
-    private String status;
+    private Integer userId;
     private Date createdAt;
     @Transient
     private Map<String, Integer> items;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    Set<Product> products = new HashSet<>();
-
+    @OneToMany(mappedBy = "orderId", orphanRemoval = true)
+    Set<OrderItem> orderItems = new HashSet<>();
 
     public Order(){}
 
-    public Order(int userId, String status, Date createdAt) {
+    public Order(int userId, Date createdAt) {
         this.userId = userId;
-        this.status = status;
         this.createdAt = createdAt;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public int getId() {
@@ -51,10 +35,6 @@ public class Order {
 
     public int getUserId() {
         return userId;
-    }
-
-    public String getStatus() {
-        return status;
     }
 
     public Date getCreatedAt() {
@@ -73,24 +53,16 @@ public class Order {
         return items;
     }
 
-    public Set<Product> getProducts() {
-        return products;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
-    public void setProducts(Set<Product> products) {
-        this.products = products;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Order order = (Order) o;
-        return id == order.id && userId == order.userId && user.equals(order.user) && status.equals(order.status) && createdAt.equals(order.createdAt) && items.equals(order.items);
+    public Set<OrderItem> getOrderItems() {
+        return orderItems;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, userId, user, status, createdAt, items);
+    public String toString() {
+        return Integer.toString(id);
     }
 }

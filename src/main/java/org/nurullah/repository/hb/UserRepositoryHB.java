@@ -1,11 +1,12 @@
-package org.nurullah.repository;
+package org.nurullah.repository.hb;
 
 import org.hibernate.Session;
 import org.nurullah.model.User;
+import org.nurullah.repository.UserRepository;
 
 import java.util.List;
 
-public class UserRepositoryHB implements UserRepository{
+public class UserRepositoryHB implements UserRepository {
 
     private final Session session;
 

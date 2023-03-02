@@ -2,7 +2,10 @@ package org.nurullah;
 
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.nurullah.repository.*;
+import org.nurullah.repository.hb.CategoryRepositoryHB;
+import org.nurullah.repository.hb.OrderRepositoryHB;
+import org.nurullah.repository.hb.ProductRepositoryHB;
+import org.nurullah.repository.hb.UserRepositoryHB;
 import org.nurullah.service.CategoryService;
 import org.nurullah.service.OrderService;
 import org.nurullah.service.ProductService;
@@ -58,6 +61,7 @@ public class ApplicationEntryPoint {
                 else if (selectedOperation == 2) controller.deleteProduct();
                 else if (selectedOperation == 3) controller.updateProduct();
                 else if (selectedOperation == 4) controller.listProducts();
+                else System.out.println("Invalid Operation");
             } else if (selectedEntity == 3) {
                 var selectedOperation = getChoice(
                     List.of("Create", "Delete", "Update", "List", "Set products")
@@ -67,14 +71,16 @@ public class ApplicationEntryPoint {
                 else if (selectedOperation == 3) controller.updateCategory();
                 else if (selectedOperation == 4) controller.listCategories();
                 else if (selectedOperation == 5) controller.addProductsToCategory();
+                else System.out.println("Invalid Operation");
             } else if (selectedEntity == 4) {
                 var selectedOperation = getChoice(
-                    List.of("Create", "Delete", "Update", "List", "Add products")
+                    List.of("Create", "Delete", "List", "Add products")
                 );
                 if (selectedOperation == 1) controller.createOrder();
                 else if (selectedOperation == 2) controller.deleteOrder();
-                else if (selectedOperation == 4) controller.listOrders();
-                else if (selectedOperation == 5) controller.addProductsToOrder();
+                else if (selectedOperation == 3) controller.listOrders();
+                else if (selectedOperation == 4) controller.addProductsToOrder();
+                else System.out.println("Invalid Operation");
             } else System.out.println("Invalid Selection!");
         }
     }
@@ -89,7 +95,5 @@ public class ApplicationEntryPoint {
         choicesStr.append("Choice: ");
         System.out.print(choicesStr);
         return scanner.nextInt();
-
     }
-
 }

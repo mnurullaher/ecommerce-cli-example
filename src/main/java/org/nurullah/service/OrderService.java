@@ -6,6 +6,7 @@ import org.nurullah.repository.OrderRepository;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -14,13 +15,9 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public void createOrder(int userId, String status){
-        Order order = new Order(userId, status, Date.from(Instant.now()));
-        orderRepository.saveOrder(order, userId);
-    }
-
-    public void addProductsToOrder(int orderId, List<Integer> productIds){
-        orderRepository.addProductsToOrder(orderId, productIds);
+    public void createOrder(int userId, Map<Integer, Integer> itemMap){
+        Order order = new Order(userId, Date.from(Instant.now()));
+        orderRepository.saveOrder(order, itemMap);
     }
 
     public void deleteOrder(int orderId){
@@ -29,5 +26,9 @@ public class OrderService {
 
     public List<Order> listOrders(){
         return orderRepository.listOrders();
+    }
+
+    public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap){
+        orderRepository.addProductsToOrder(orderId, itemMap);
     }
 }

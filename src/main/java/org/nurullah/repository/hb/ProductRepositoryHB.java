@@ -1,7 +1,8 @@
-package org.nurullah.repository;
+package org.nurullah.repository.hb;
 
 import org.hibernate.Session;
 import org.nurullah.model.Product;
+import org.nurullah.repository.ProductRepository;
 
 import java.util.List;
 

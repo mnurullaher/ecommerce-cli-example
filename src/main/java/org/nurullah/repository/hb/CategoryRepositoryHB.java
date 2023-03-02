@@ -1,12 +1,13 @@
-package org.nurullah.repository;
+package org.nurullah.repository.hb;
 
 import org.hibernate.Session;
 import org.nurullah.model.Category;
 import org.nurullah.model.Product;
+import org.nurullah.repository.CategoryRepository;
 
 import java.util.List;
 
-public class CategoryRepositoryHB implements CategoryRepository{
+public class CategoryRepositoryHB implements CategoryRepository {
     private final Session session;
 
     public CategoryRepositoryHB(Session session){
@@ -19,6 +20,7 @@ public class CategoryRepositoryHB implements CategoryRepository{
         session.persist(session.merge(category));
         txn.commit();
     }
+
     @Override
     public void addProductsToCategory(int categoryId, List<Integer> productIds){
         var txn = session.beginTransaction();
@@ -46,6 +48,7 @@ public class CategoryRepositoryHB implements CategoryRepository{
         session.persist(category);
         txn.commit();
     }
+
     @Override
     public List<Category> listCategories() {
         return session.createQuery(

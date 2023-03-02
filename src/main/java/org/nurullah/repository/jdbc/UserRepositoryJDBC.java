@@ -1,16 +1,17 @@
-package org.nurullah.repository;
+package org.nurullah.repository.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
-import org.nurullah.repository.query.UserQuery;
+import org.nurullah.repository.UserRepository;
+import org.nurullah.repository.jdbc.query.UserQuery;
 import org.nurullah.model.User;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserRepositoryJDBC implements UserRepository{
+public class UserRepositoryJDBC implements UserRepository {
     private final Logger logger = LogManager.getLogger();
     private final Connection connection;
     private PreparedStatement preparedStatement;

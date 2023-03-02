@@ -17,7 +17,7 @@ public class User {
     private String email;
     private Date createdAt;
     @OneToMany(
-            mappedBy = "user",
+            mappedBy = "userId",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
@@ -33,11 +33,12 @@ public class User {
 
     public void addOrder(Order order){
         orders.add(order);
-        order.setUser(this);
+        order.setUserId(this.id);
     }
     public void removeOrder(Order order){
+        order.getOrderItems().clear();
         orders.remove(order);
-        order.setUser(null);
+        order.setUserId(null);
     }
 
     public Set<Order> getOrders() {

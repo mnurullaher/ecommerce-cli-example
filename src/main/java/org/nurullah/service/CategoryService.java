@@ -19,10 +19,6 @@ public class CategoryService {
         categoryRepository.saveCategory(category);
     }
 
-    public void addProductsToCategory(int categoryId, List<Integer> productIds){
-        categoryRepository.addProductsToCategory(categoryId, productIds);
-    }
-
     public void deleteCategory(int categoryId){
         categoryRepository.deleteCategory(categoryId);
     }
@@ -33,5 +29,9 @@ public class CategoryService {
 
     public List<Category> listCategories(){
         return categoryRepository.listCategories();
+    }
+
+    public void addProductsToCategory(int categoryId, List<Integer> productIds){
+        categoryRepository.addProductsToCategory(categoryId, productIds);
     }
 }

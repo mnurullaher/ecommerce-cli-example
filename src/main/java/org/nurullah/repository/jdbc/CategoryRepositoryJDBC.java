@@ -1,10 +1,11 @@
-package org.nurullah.repository;
+package org.nurullah.repository.jdbc;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Category;
-import org.nurullah.repository.query.CategoryQuery;
+import org.nurullah.repository.CategoryRepository;
+import org.nurullah.repository.jdbc.query.CategoryQuery;
 
 import java.sql.*;
 import java.util.ArrayList;

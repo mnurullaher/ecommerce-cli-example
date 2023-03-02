@@ -1,4 +1,4 @@
-package org.nurullah.repository.query;
+package org.nurullah.repository.jdbc.query;
 
 public class ProductQuery {
     public static final String saveProductQuery = "INSERT INTO products(product_name, product_price, createdAt) " +
