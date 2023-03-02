@@ -1,21 +1,20 @@
 package org.nurullah.repository.jdbc.query;
 
 public class ProductQuery {
-    public static final String saveProductQuery = "INSERT INTO products(product_name, product_price, createdAt) " +
+    public static final String saveProductQuery = "INSERT INTO products(name, price, createdAt) " +
             "VALUES(?, ?, ?)";
-    public static final String saveProductCategoryQuery = """
-            INSERT INTO product_categories(product_id, category_id) VALUES(?, ?)
-            """;
-    public static final String deleteFromOrderItems = "DELETE FROM order_items WHERE product_id = ?";
-    public static final String deleteProductQuery = "DELETE FROM products WHERE product_id = ?";
+    public static final String deleteProductQuery = "DELETE FROM products WHERE id = ?";
     public static final String deleteFromProductCategoryList = """
-            DELETE FROM product_categories WHERE product_id = ?
+            DELETE FROM categories_products WHERE products_id = ?
             """;
     public static final String listProductCategories = """
             SELECT c.* FROM categories c
-            LEFT JOIN product_categories pc
-            ON(c.category_id = pc.category_id)
-            WHERE pc.product_id = ?;
+            LEFT JOIN categories_products cp
+            ON(c.id = cp.categories_id)
+            WHERE cp.products_id = ?;
             """;
     public static final String listProducts = "SELECT * FROM products";
+
+    public static final String updateProductQuery = "UPDATE products SET name = ?, price = ? " +
+            "WHERE id = ?";
 }

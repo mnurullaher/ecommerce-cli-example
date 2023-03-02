@@ -50,6 +50,19 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         }
     }
 
+    @Override
+    public void updateCategory(int categoryId, String newName) {
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    CategoryQuery.updateCategoryQuery);
+            preparedStatement.setString(1, newName);
+            preparedStatement.setInt(2, categoryId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("ERROR while updating category: " + e);
+        }
+    }
+
     public List<Category> listCategories(){
         List<Category> categories = new ArrayList<>();
         try {
@@ -57,8 +70,8 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
             var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                var categoryID = resultSet.getInt("category_id");
-                var categoryName = resultSet.getString("category_name");
+                var categoryID = resultSet.getInt("id");
+                var categoryName = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("createdAt");
 
                 Category category = new Category(categoryName, createdAt);
@@ -73,11 +86,17 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
 
     @Override
     public void addProductsToCategory(int categoryId, List<Integer> productIds) {
-
-    }
-
-    @Override
-    public void updateCategory(int categoryId, String newName) {
-
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    CategoryQuery.addProductsToCategoryQuery);
+            for (var productId : productIds){
+                preparedStatement.setInt(1, categoryId);
+                preparedStatement.setInt(2, productId);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.warn("ERROR while adding products to category: " + e);
+        }
     }
 }

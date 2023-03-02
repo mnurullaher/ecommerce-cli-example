@@ -1,48 +1,48 @@
 USE ecommerce_database;
 
 CREATE TABLE users(
-	user_id INT NOT NULL AUTO_INCREMENT,
-	user_name VARCHAR(50),
-	user_email VARCHAR(50),
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(50),
+	email VARCHAR(50),
 	createdAt TIMESTAMP,
-	PRIMARY KEY(user_id)
+	PRIMARY KEY(id)
 );
 
 CREATE TABLE products(
-	product_id INT NOT NULL AUTO_INCREMENT,
-	product_name VARCHAR(50),
-	product_price INT,
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(50),
+	price INT,
 	createdAt TIMESTAMP,
-	PRIMARY KEY(product_id)
+	PRIMARY KEY(id)
 );
 
 CREATE TABLE categories(
-	category_id INT NOT NULL AUTO_INCREMENT,
-	category_name VARCHAR(50),
+	id INT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(50),
 	createdAt TIMESTAMP,
-	PRIMARY KEY (category_id)
+	PRIMARY KEY (id)
 );
 
-CREATE TABLE product_categories(
-	product_id INT,
-	category_id INT,
-	FOREIGN KEY (product_id) REFERENCES products(product_id),
-	FOREIGN KEY (category_id) REFERENCES categories(category_id)
+CREATE TABLE categories_products(
+	products_id INT,
+	categories_id INT,
+	FOREIGN KEY (products_id) REFERENCES products(id),
+	FOREIGN KEY (categories_id) REFERENCES categories(id)
 );
 
 CREATE TABLE orders(
-	order_id INT NOT NULL AUTO_INCREMENT,
-	user_id INT,
-	status VARCHAR(50),
+	id INT NOT NULL AUTO_INCREMENT,
+	userId INT,
 	createdAt TIMESTAMP,
-	PRIMARY KEY(order_id),
-	FOREIGN KEY (user_id) REFERENCES users(user_id)
+	PRIMARY KEY(id),
+	FOREIGN KEY (userId) REFERENCES users(id)
 );
 
-CREATE TABLE order_items(
-	order_id INT,
-	product_id INT,
+CREATE TABLE OrderItem(
+    id INT NOT NULL AUTO_INCREMENT,
+	orderId INT,
+	productId INT,
 	quantity INT,
-	FOREIGN KEY (order_id) REFERENCES orders(order_id),
-	FOREIGN KEY (product_id) REFERENCES products(product_id)
+	FOREIGN KEY (orderId) REFERENCES orders(id),
+	FOREIGN KEY (productId) REFERENCES products(id)
 );

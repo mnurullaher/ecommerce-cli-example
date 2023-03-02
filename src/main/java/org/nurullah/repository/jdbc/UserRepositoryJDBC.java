@@ -55,9 +55,9 @@ public class UserRepositoryJDBC implements UserRepository {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                int userId = resultSet.getInt("user_id");
-                String userName = resultSet.getString("user_name");
-                String userEmail = resultSet.getString("user_email");
+                int userId = resultSet.getInt("id");
+                String userName = resultSet.getString("name");
+                String userEmail = resultSet.getString("email");
                 Timestamp createdAt = resultSet.getTimestamp("createdAt");
 
                 User user = new User(userName, userEmail, createdAt);
