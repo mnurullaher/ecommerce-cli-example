@@ -50,6 +50,11 @@ public class OrderRepositoryJDBC implements OrderRepository {
         }
     }
 
+    @Override
+    public void saveOrder(Order order) {
+        throw new RuntimeException("not implemented!");
+    }
+
     public void deleteOrder(int orderId){
         try {
             var preparedStatement = connection.prepareStatement(OrderQuery.deleteFromOrderItems);

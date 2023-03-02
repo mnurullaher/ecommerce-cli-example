@@ -17,33 +17,17 @@ public class OrderRepositoryHB implements OrderRepository {
         this.session = session;
     }
 
-    @Override
-    public void saveOrder(Order order, Map<Integer, Integer> itemMap) {
-        if (checkInvalidProduction(itemMap)) return;
-        var txn = session.beginTransaction();
-        var user = session.find(User.class, order.getUserId());
-        session.persist(order);
-        for (Map.Entry<Integer, Integer> item : itemMap.entrySet()){
-            var orderItem = new OrderItem(order.getId(), item.getKey(), item.getValue());
-            order.getOrderItems().add(orderItem);
-            session.persist(orderItem);
-        }
-        user.addOrder(order);
-        session.persist(order);
-        txn.commit();
-    }
-
     public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap){
-        if (checkInvalidProduction(itemMap)) return;
-        var txn = session.beginTransaction();
-        var order = session.find(Order.class, orderId);
-        for (Map.Entry<Integer, Integer> item : itemMap.entrySet()){
-            var orderItem = new OrderItem(order.getId(), item.getKey(), item.getValue());
-            order.getOrderItems().add(orderItem);
-            session.persist(orderItem);
-        }
-        session.persist(order);
-        txn.commit();
+//        if (checkInvalidProduction(itemMap)) return;
+//        var txn = session.beginTransaction();
+//        var order = session.find(Order.class, orderId);
+//        for (Map.Entry<Integer, Integer> item : itemMap.entrySet()){
+//            var orderItem = new OrderItem(order.getId(), item.getKey(), item.getValue());
+//            order.getOrderItems().add(orderItem);
+//            session.persist(orderItem);
+//        }
+//        session.persist(order);
+//        txn.commit();
     }
 
     private boolean checkInvalidProduction(Map<Integer, Integer> itemMap) {
@@ -57,6 +41,13 @@ public class OrderRepositoryHB implements OrderRepository {
             }
         }
         return false;
+    }
+
+    @Override
+    public void saveOrder(Order order) {
+        var txn = session.beginTransaction();
+        session.persist(order);
+        txn.commit();
     }
 
     @Override

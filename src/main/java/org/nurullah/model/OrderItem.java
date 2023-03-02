@@ -10,17 +10,17 @@ public class OrderItem {
     @GenericGenerator(name = "native", strategy = "native")
     private int id;
     private int productId;
-    private int orderId;
+    // private int orderId;
     private int quantity;
 
     public OrderItem() {
     }
 
-    public OrderItem(int orderId, int productId, int quantity) {
-        this.orderId = orderId;
+    public OrderItem(int productId, int quantity) {
         this.productId = productId;
         this.quantity = quantity;
     }
+
 
     @Override
     public String toString() {
