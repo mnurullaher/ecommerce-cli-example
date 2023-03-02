@@ -21,7 +21,8 @@ public class ProductRepositoryJDBC implements ProductRepository {
     public ProductRepositoryJDBC(){
         connection = DBConnection.getConnection();
     }
-    public void saveProduct(Product product, List<Integer> categories){
+
+    public void saveProduct(Product product){
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
                     Statement.RETURN_GENERATED_KEYS);
@@ -34,30 +35,14 @@ public class ProductRepositoryJDBC implements ProductRepository {
             if (resultSet.next()){
                 product.setId(resultSet.getInt(1));
             }
-            preparedStatement = connection.prepareStatement(ProductQuery.saveProductCategoryQuery);
-            for (Integer category : categories){
-                preparedStatement.setInt(1, product.getId());
-                preparedStatement.setInt(2, category);
-                preparedStatement.addBatch();
-            }
-            preparedStatement.executeBatch();
         } catch (SQLException e) {
             logger.warn("ERROR while saving product: " + e);
         }
     }
 
-    @Override
-    public void saveProduct(Product product) {
-
-    }
-
     public void deleteProduct(int productId){
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.deleteFromProductCategoryList);
-            preparedStatement.setInt(1, productId);
-            preparedStatement.executeUpdate();
-
-            preparedStatement = connection.prepareStatement(ProductQuery.deleteFromOrderItems);
             preparedStatement.setInt(1, productId);
             preparedStatement.executeUpdate();
 
@@ -69,6 +54,20 @@ public class ProductRepositoryJDBC implements ProductRepository {
         }
     }
 
+    @Override
+    public void updateProduct(int productId, String newName, double newPrice) {
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    ProductQuery.updateProductQuery);
+            preparedStatement.setString(1, newName);
+            preparedStatement.setDouble(2, newPrice);
+            preparedStatement.setInt(3, productId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("ERROR while updating product: " + e);
+        }
+    }
+
     public List<Product> listProducts(){
         List<Product> products = new ArrayList<>();
         try {
@@ -76,9 +75,9 @@ public class ProductRepositoryJDBC implements ProductRepository {
             var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                var productId = resultSet.getInt("product_id");
-                var productName = resultSet.getString("product_name");
-                var productPrice = resultSet.getDouble("product_price");
+                var productId = resultSet.getInt("id");
+                var productName = resultSet.getString("name");
+                var productPrice = resultSet.getDouble("price");
                 var createdAt = resultSet.getTimestamp("createdAt");
 
                 Product product = new Product(productName, productPrice, createdAt);
@@ -92,11 +91,6 @@ public class ProductRepositoryJDBC implements ProductRepository {
         return products;
     }
 
-    @Override
-    public void updateProduct(int productId, String newName, double newPrice) {
-
-    }
-
     private Set<Category> findCategoriesOfProduct(int productId) {
         Set<Category> categories = new HashSet<>();
         try {
@@ -105,8 +99,8 @@ public class ProductRepositoryJDBC implements ProductRepository {
 
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                var categoryId = resultSet.getInt("category_id");
-                var categoryName = resultSet.getString("category_name");
+                var categoryId = resultSet.getInt("id");
+                var categoryName = resultSet.getString("name");
                 var createdAt = resultSet.getTimestamp("createdAt");
                 Category category = new Category(categoryName, createdAt);
                 category.setId(categoryId);

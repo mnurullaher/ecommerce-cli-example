@@ -9,11 +9,6 @@ import java.util.List;
 public record ProductRepositoryHB(Session session) implements ProductRepository {
 
     @Override
-    public void saveProduct(Product product, List<Integer> categories) {
-
-    }
-
-    @Override
     public void saveProduct(Product product) {
         var txn = session.beginTransaction();
         session.persist(product);

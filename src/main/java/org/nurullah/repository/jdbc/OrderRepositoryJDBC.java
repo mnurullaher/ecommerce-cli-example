@@ -71,9 +71,8 @@ public class OrderRepositoryJDBC implements OrderRepository {
             var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()){
-                var orderId = resultSet.getInt("order_id");
-                var userId = resultSet.getInt("user_id");
-                var status = resultSet.getString("status");
+                var orderId = resultSet.getInt("id");
+                var userId = resultSet.getInt("userId");
                 var createdAt = resultSet.getTimestamp("createdAt");
 
                 Order order = new Order(userId, createdAt);
@@ -84,13 +83,24 @@ public class OrderRepositoryJDBC implements OrderRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while listing orders: " + e);
         }
-
         return orders;
     }
 
     @Override
     public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap) {
-
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    OrderQuery.addProductsToOrderQuery);
+            for (Map.Entry<Integer, Integer> item : itemMap.entrySet()){
+                preparedStatement.setInt(1, orderId);
+                preparedStatement.setInt(2, item.getKey());
+                preparedStatement.setInt(3, item.getValue());
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.warn("ERROR while adding products to order: " + e);
+        }
     }
 
     private Map<String , Integer> findItemsOfOrder(int orderId){
@@ -101,7 +111,7 @@ public class OrderRepositoryJDBC implements OrderRepository {
 
             var resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                var productName = resultSet.getString("product_name");
+                var productName = resultSet.getString("name");
                 var quantity = resultSet.getInt("quantity");
 
                 itemMap.put(productName, quantity);
