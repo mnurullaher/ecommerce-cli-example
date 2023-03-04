@@ -1,9 +1,10 @@
 package org.nurullah.model;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-@Entity
+@Entity @NoArgsConstructor
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -11,9 +12,6 @@ public class OrderItem {
     private int id;
     private int productId;
     private int quantity;
-
-    public OrderItem() {
-    }
 
     public OrderItem(int productId, int quantity) {
         this.productId = productId;

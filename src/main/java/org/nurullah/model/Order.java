@@ -1,11 +1,15 @@
 package org.nurullah.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.*;
 
 @Entity (name = "orders")
+@Getter @Setter @NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -19,47 +23,9 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> orderItems = new HashSet<>();
 
-    public Order(){}
-
     public Order(int userId, Date createdAt) {
         this.userId = userId;
         this.createdAt = createdAt;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setItems(Map<String, Integer> items) {
-        this.items = items;
-    }
-
-    public Map<String, Integer> getItems() {
-        return items;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Set<OrderItem> getOrderItems() {
-        return orderItems;
     }
 
     @Override

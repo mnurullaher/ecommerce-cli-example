@@ -1,6 +1,9 @@
 package org.nurullah.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Date;
@@ -8,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity (name = "users")
+@Getter @Setter @NoArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")
@@ -23,49 +27,16 @@ public class User {
     )
     private Set<Order> orders = new HashSet<>();
 
-    public User(){}
-
     public User(String name, String email, Date createdAt) {
         this.name = name;
         this.email = email;
         this.createdAt = createdAt;
     }
 
-    public void addOrder(Order order){
-        orders.add(order);
-        order.setUserId(this.id);
-    }
     public void removeOrder(Order order){
         order.getOrderItems().clear();
         orders.remove(order);
         order.setUserId(null);
     }
 
-    public Set<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(Set<Order> orders) {
-        this.orders = orders;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
 }

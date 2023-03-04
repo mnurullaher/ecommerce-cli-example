@@ -3,7 +3,9 @@ package org.nurullah.repository.hb;
 import org.hibernate.Session;
 import org.nurullah.model.Product;
 import org.nurullah.repository.ProductRepository;
+import pl.mjaron.etudes.Str;
 
+import java.util.Arrays;
 import java.util.List;
 
 public record ProductRepositoryHB(Session session) implements ProductRepository {
