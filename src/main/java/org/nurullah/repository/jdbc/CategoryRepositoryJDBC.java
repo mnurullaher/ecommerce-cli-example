@@ -51,6 +51,21 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
     }
 
     @Override
+    public void deleteCategory(Category category) {
+        try {
+            var preparedStatement = connection.prepareStatement(CategoryQuery.deleteFromProductCategories);
+            preparedStatement.setInt(1, category.getId());
+            preparedStatement.executeUpdate();
+
+            preparedStatement = connection.prepareStatement(CategoryQuery.deleteCategoryQuery);
+            preparedStatement.setInt(1, category.getId());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            logger.warn("ERROR while deleting category: " + e);
+        }
+    }
+
+    @Override
     public void updateCategory(int categoryId, String newName) {
         try {
             var preparedStatement = connection.prepareStatement(
@@ -61,6 +76,28 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while updating category: " + e);
         }
+    }
+
+    @Override
+    public Category findById(int id) {
+        var category = new Category();
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    CategoryQuery.findByIdQuery);
+            preparedStatement.setInt(1, id);
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                var categoryId = resultSet.getInt("id");
+                var categoryName = resultSet.getString("name");
+                var createdAt = resultSet.getTimestamp("createdAt");
+                category.setId(categoryId);
+                category.setName(categoryName);
+                category.setCreatedAt(createdAt);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return category;
     }
 
     public List<Category> listCategories(){

@@ -21,16 +21,27 @@ public class UserRepositoryHB implements UserRepository {
     }
 
     @Override
-    public void deleteUser(int userID) {
+    public void deleteUser(User user) {
         var txn = session.beginTransaction();
-        var user = session.find(User.class, userID);
         session.remove(user);
         txn.commit();
+    }
+
+    @Override
+    public void deleteUser(int userID) {
+
     }
 
     @Override
     public List<User> listUsers() {
         return session.createQuery("select u from users u", User.class)
             .list();
+    }
+
+    public User findById(int id) {
+        var txn = session.beginTransaction();
+        var user = session.find(User.class, id);
+        txn.commit();
+        return user;
     }
 }

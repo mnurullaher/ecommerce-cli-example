@@ -48,6 +48,11 @@ public class UserRepositoryJDBC implements UserRepository {
         }
     }
 
+    @Override
+    public void deleteUser(User user) {
+
+    }
+
     public List<User> listUsers() {
         List<User> users = new ArrayList<>();
         try {
@@ -68,5 +73,10 @@ public class UserRepositoryJDBC implements UserRepository {
             logger.warn("ERROR while listing users: " + e);
         }
         return users;
+    }
+
+    @Override
+    public User findById(int id) {
+        return null;
     }
 }

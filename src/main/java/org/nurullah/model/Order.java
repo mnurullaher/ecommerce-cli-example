@@ -15,8 +15,9 @@ public class Order {
     private Date createdAt;
     @Transient
     private Map<String, Integer> items;
-    @OneToMany(mappedBy = "orderId", orphanRemoval = true)
-    Set<OrderItem> orderItems = new HashSet<>();
+    @JoinColumn(name = "orderId")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<OrderItem> orderItems = new HashSet<>();
 
     public Order(){}
 

@@ -55,6 +55,11 @@ public class ProductRepositoryJDBC implements ProductRepository {
     }
 
     @Override
+    public void deleteProduct(Product product) {
+
+    }
+
+    @Override
     public void updateProduct(int productId, String newName, double newPrice) {
         try {
             var preparedStatement = connection.prepareStatement(
@@ -66,6 +71,11 @@ public class ProductRepositoryJDBC implements ProductRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while updating product: " + e);
         }
+    }
+
+    @Override
+    public Product findById(int givenId) {
+        return null;
     }
 
     public List<Product> listProducts(){

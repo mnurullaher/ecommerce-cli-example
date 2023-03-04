@@ -50,6 +50,11 @@ public class OrderRepositoryJDBC implements OrderRepository {
         }
     }
 
+    @Override
+    public void saveOrder(Order order) {
+
+    }
+
     public void deleteOrder(int orderId){
         try {
             var preparedStatement = connection.prepareStatement(OrderQuery.deleteFromOrderItems);
@@ -62,6 +67,11 @@ public class OrderRepositoryJDBC implements OrderRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while deleting order: " + e);
         }
+    }
+
+    @Override
+    public void deleteOrder(Order order) {
+
     }
 
     public List<Order> listOrders(){
@@ -86,7 +96,6 @@ public class OrderRepositoryJDBC implements OrderRepository {
         return orders;
     }
 
-    @Override
     public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap) {
         try {
             var preparedStatement = connection.prepareStatement(
@@ -101,6 +110,11 @@ public class OrderRepositoryJDBC implements OrderRepository {
         } catch (SQLException e) {
             logger.warn("ERROR while adding products to order: " + e);
         }
+    }
+
+    @Override
+    public Order findById(int givenId) {
+        return null;
     }
 
     private Map<String , Integer> findItemsOfOrder(int orderId){

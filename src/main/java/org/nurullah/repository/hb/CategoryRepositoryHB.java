@@ -2,7 +2,6 @@ package org.nurullah.repository.hb;
 
 import org.hibernate.Session;
 import org.nurullah.model.Category;
-import org.nurullah.model.Product;
 import org.nurullah.repository.CategoryRepository;
 
 import java.util.List;
@@ -17,36 +16,30 @@ public class CategoryRepositoryHB implements CategoryRepository {
     @Override
     public void saveCategory(Category category) {
         var txn = session.beginTransaction();
-        session.persist(session.merge(category));
+        session.persist(category);
         txn.commit();
     }
 
     @Override
     public void addProductsToCategory(int categoryId, List<Integer> productIds){
+
+    }
+
+    @Override
+    public void deleteCategory(Category category) {
         var txn = session.beginTransaction();
-        Category category = session.find(Category.class, categoryId);
-        for (var id : productIds){
-            var product = session.find(Product.class, id);
-            category.getProducts().add(product);
-        }
-        session.persist(category);
+        session.remove(category);
         txn.commit();
     }
 
     @Override
     public void deleteCategory(int categoryId) {
-        var txn = session.beginTransaction();
-        Category category = session.find(Category.class, categoryId);
-        session.remove(category);
-        txn.commit();
+
     }
 
+    @Override
     public void  updateCategory(int categoryId, String newName){
-        var txn = session.beginTransaction();
-        Category category = session.find(Category.class, categoryId);
-        category.setName(newName);
-        session.persist(category);
-        txn.commit();
+
     }
 
     @Override
@@ -54,5 +47,12 @@ public class CategoryRepositoryHB implements CategoryRepository {
         return session.createQuery(
                         "SELECT c FROM categories c", Category.class)
                 .getResultList();
+    }
+
+    public Category findById(int id){
+        var txn = session.beginTransaction();
+        var category = session.find(Category.class, id);
+        txn.commit();
+        return category;
     }
 }

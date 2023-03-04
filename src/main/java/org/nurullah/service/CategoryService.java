@@ -9,9 +9,11 @@ import java.util.List;
 
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ProductService productService;
 
-    public CategoryService(CategoryRepository categoryRepository){
+    public CategoryService(CategoryRepository categoryRepository, ProductService productService){
         this.categoryRepository = categoryRepository;
+        this.productService = productService;
     }
 
     public void createCategory(String name){
@@ -20,11 +22,14 @@ public class CategoryService {
     }
 
     public void deleteCategory(int categoryId){
-        categoryRepository.deleteCategory(categoryId);
+        var category = categoryRepository.findById(categoryId);
+        categoryRepository.deleteCategory(category);
     }
 
     public void updateCategory(int categoryId, String newName){
-        categoryRepository.updateCategory(categoryId, newName);
+        var category = categoryRepository.findById(categoryId);
+        category.setName(newName);
+        categoryRepository.saveCategory(category);
     }
 
     public List<Category> listCategories(){
@@ -32,6 +37,11 @@ public class CategoryService {
     }
 
     public void addProductsToCategory(int categoryId, List<Integer> productIds){
-        categoryRepository.addProductsToCategory(categoryId, productIds);
+        var category = categoryRepository.findById(categoryId);
+        productIds.forEach(id -> {
+            var product = productService.findById(id);
+            category.getProducts().add(product);
+        });
+        categoryRepository.saveCategory(category);
     }
 }

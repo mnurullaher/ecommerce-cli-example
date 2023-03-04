@@ -20,10 +20,15 @@ public class UserService {
     }
 
     public void deleteUser(int userId) {
-        userRepository.deleteUser(userId);
+        var user = userRepository.findById(userId);
+        userRepository.deleteUser(user);
     }
 
     public List<User> listUsers() {
         return userRepository.listUsers();
+    }
+
+    public User findById (int id) {
+        return userRepository.findById(id);
     }
 }

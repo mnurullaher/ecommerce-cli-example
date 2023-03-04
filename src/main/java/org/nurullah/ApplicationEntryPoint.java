@@ -26,11 +26,14 @@ public class ApplicationEntryPoint {
         var factory = new MetadataSources(registry).buildMetadata()
                 .buildSessionFactory();
         var session = factory.openSession();
+        var productService = new ProductService(new ProductRepositoryHB(session));
+        var userService = new UserService(new UserRepositoryHB(session));
         CLIController controller = new CLIController(
-                new UserService(new UserRepositoryHB(session)),
-                new ProductService(new ProductRepositoryHB(session)),
-                new CategoryService(new CategoryRepositoryHB(session)),
-                new OrderService(new OrderRepositoryHB(session)));
+                userService,
+                productService,
+                new CategoryService(new CategoryRepositoryHB(session), productService),
+                new OrderService(new OrderRepositoryHB(session), userService)
+        );
         while (true) {
             System.out.println();
             session.clear();

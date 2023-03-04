@@ -20,11 +20,20 @@ public class ProductService {
     }
 
     public void deleteProduct(int productId){
-        productRepository.deleteProduct(productId);
+        var product = productRepository.findById(productId);
+        product.remove();
+        productRepository.deleteProduct(product);
     }
 
     public void updateProduct(int productId, String newName, double newPrice){
-        productRepository.updateProduct(productId, newName, newPrice);
+        var product = productRepository.findById(productId);
+        product.setName(newName);
+        product.setPrice(newPrice);
+        productRepository.saveProduct(product);
+    }
+
+    public Product findById(int id){
+        return productRepository.findById(id);
     }
 
     public List<Product> listProducts(){

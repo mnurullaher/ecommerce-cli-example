@@ -11,4 +11,8 @@ public class CategoryQuery {
             INSERT INTO categories_products(categories_id, products_id) 
             VALUES(?, ?)
             """;
+    public static final String findByIdQuery = """
+            SELECT * FROM categories 
+            WHERE id = ?
+            """;
 }

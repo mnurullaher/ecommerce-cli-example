@@ -16,21 +16,15 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
     }
 
     @Override
-    public void deleteProduct(int productId) {
+    public void deleteProduct(Product product) {
         var txn = session.beginTransaction();
-        Product product = session.find(Product.class, productId);
-        product.remove();
         session.remove(product);
         txn.commit();
     }
 
-    public void updateProduct(int productId, String newName, double newPrice){
-        var txn = session.beginTransaction();
-        Product product = session.find(Product.class, productId);
-        product.setName(newName);
-        product.setPrice(newPrice);
-        session.persist(product);
-        txn.commit();
+    @Override
+    public void deleteProduct(int productId) {
+
     }
 
     @Override
@@ -40,5 +34,18 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
                 .getResultList();
         txn.commit();
         return products;
+    }
+
+    @Override
+    public Product findById(int id) {
+        var txn = session.beginTransaction();
+        var product = session.find(Product.class, id);
+        txn.commit();
+        return product;
+    }
+
+    @Override
+    public void updateProduct(int productId, String newName, double newPrice) {
+
     }
 }
