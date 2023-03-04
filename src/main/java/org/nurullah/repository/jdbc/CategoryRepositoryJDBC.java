@@ -36,20 +36,6 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         }
     }
 
-    public void deleteCategory(int categoryId){
-        try {
-            var preparedStatement = connection.prepareStatement(CategoryQuery.deleteFromProductCategories);
-            preparedStatement.setInt(1, categoryId);
-            preparedStatement.executeUpdate();
-
-            preparedStatement = connection.prepareStatement(CategoryQuery.deleteCategoryQuery);
-            preparedStatement.setInt(1, categoryId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            logger.warn("ERROR while deleting category: " + e);
-        }
-    }
-
     @Override
     public void deleteCategory(Category category) {
         try {

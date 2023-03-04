@@ -33,11 +33,6 @@ public class CategoryRepositoryHB implements CategoryRepository {
     }
 
     @Override
-    public void deleteCategory(int categoryId) {
-
-    }
-
-    @Override
     public void  updateCategory(int categoryId, String newName){
 
     }
