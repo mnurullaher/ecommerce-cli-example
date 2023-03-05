@@ -1,10 +1,12 @@
 package org.nurullah.model;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity @NoArgsConstructor
+@Getter
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "native")

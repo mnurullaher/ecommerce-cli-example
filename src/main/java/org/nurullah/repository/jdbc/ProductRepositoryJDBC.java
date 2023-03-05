@@ -26,9 +26,12 @@ public class ProductRepositoryJDBC implements ProductRepository {
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.saveProductQuery,
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, product.getName());
-            preparedStatement.setDouble(2, product.getPrice());
-            preparedStatement.setTimestamp(3, new Timestamp(product.getCreatedAt().getTime()));
+            preparedStatement.setInt(1, product.getId());
+            preparedStatement.setString(2, product.getName());
+            preparedStatement.setDouble(3, product.getPrice());
+            preparedStatement.setTimestamp(4, new Timestamp(product.getCreatedAt().getTime()));
+            preparedStatement.setString(5, product.getName());
+            preparedStatement.setDouble(6, product.getPrice());
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
@@ -40,14 +43,15 @@ public class ProductRepositoryJDBC implements ProductRepository {
         }
     }
 
-    public void deleteProduct(int productId){
+    @Override
+    public void deleteProduct(Product product) {
         try {
             var preparedStatement = connection.prepareStatement(ProductQuery.deleteFromProductCategoryList);
-            preparedStatement.setInt(1, productId);
+            preparedStatement.setInt(1, product.getId());
             preparedStatement.executeUpdate();
 
             preparedStatement = connection.prepareStatement(ProductQuery.deleteProductQuery);
-            preparedStatement.setInt(1, productId);
+            preparedStatement.setInt(1, product.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.warn("ERROR while deleting product: " + e);
@@ -55,27 +59,28 @@ public class ProductRepositoryJDBC implements ProductRepository {
     }
 
     @Override
-    public void deleteProduct(Product product) {
-
-    }
-
-    @Override
-    public void updateProduct(int productId, String newName, double newPrice) {
+    public Product findById(int id) {
+        Product product = new Product();
         try {
-            var preparedStatement = connection.prepareStatement(
-                    ProductQuery.updateProductQuery);
-            preparedStatement.setString(1, newName);
-            preparedStatement.setDouble(2, newPrice);
-            preparedStatement.setInt(3, productId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            logger.warn("ERROR while updating product: " + e);
-        }
-    }
+            var preparedStatement = connection.prepareStatement(ProductQuery.findById);
+            preparedStatement.setInt(1, id);
+            var resultSet = preparedStatement.executeQuery();
 
-    @Override
-    public Product findById(int givenId) {
-        return null;
+            if (resultSet.next()) {
+                var productId = resultSet.getInt("id");
+                var name = resultSet.getString("name");
+                var price = resultSet.getDouble("price");
+                var createdAt = resultSet.getTimestamp("createdAt");
+
+                product.setId(productId);
+                product.setName(name);
+                product.setPrice(price);
+                product.setCreatedAt(createdAt);
+            } else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return product;
     }
 
     public List<Product> listProducts(){

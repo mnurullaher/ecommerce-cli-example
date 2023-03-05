@@ -27,7 +27,8 @@ CREATE TABLE categories_products(
 	products_id INT,
 	categories_id INT,
 	FOREIGN KEY (products_id) REFERENCES products(id),
-	FOREIGN KEY (categories_id) REFERENCES categories(id)
+	FOREIGN KEY (categories_id) REFERENCES categories(id),
+	CONSTRAINT pk_product_categories PRIMARY KEY(products_id, categories_id)
 );
 
 CREATE TABLE orders(
@@ -45,4 +46,5 @@ CREATE TABLE OrderItem(
 	quantity INT,
 	FOREIGN KEY (orderId) REFERENCES orders(id),
 	FOREIGN KEY (productId) REFERENCES products(id)
+	PRIMARY KEY (id)
 );

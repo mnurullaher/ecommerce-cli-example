@@ -4,7 +4,6 @@ import org.nurullah.model.Category;
 import org.nurullah.repository.CategoryRepository;
 
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +32,6 @@ public class CategoryService {
         categoryRepository.saveCategory(category);
     }
 
-    public List<Category> listCategories(){
-        return categoryRepository.listCategories();
-    }
-
     public void addProductsToCategory(int categoryId, List<Integer> productIds){
         var category = categoryRepository.findById(categoryId);
         productIds.forEach(id -> {
@@ -45,4 +40,12 @@ public class CategoryService {
         });
         categoryRepository.saveCategory(category);
     }
+
+    public Category findById(int id) {
+        return categoryRepository.findById(id);
+    }
+    public List<Category> listCategories(){
+        return categoryRepository.listCategories();
+    }
+
 }

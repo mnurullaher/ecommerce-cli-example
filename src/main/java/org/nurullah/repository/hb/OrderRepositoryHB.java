@@ -6,22 +6,12 @@ import org.nurullah.repository.OrderRepository;
 
 import java.util.List;
 
-public class OrderRepositoryHB implements OrderRepository {
-    private final Session session;
-
-    public OrderRepositoryHB(Session session) {
-        this.session = session;
-    }
+public record OrderRepositoryHB(Session session) implements OrderRepository {
 
     public void saveOrder(Order order) {
         var txn = session.beginTransaction();
         session.persist(order);
         txn.commit();
-    }
-
-    @Override
-    public void deleteOrder(int orderId) {
-
     }
 
     @Override

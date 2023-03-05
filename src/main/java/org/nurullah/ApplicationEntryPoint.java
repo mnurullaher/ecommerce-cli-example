@@ -26,8 +26,8 @@ public class ApplicationEntryPoint {
         var factory = new MetadataSources(registry).buildMetadata()
                 .buildSessionFactory();
         var session = factory.openSession();
-        var productService = new ProductService(new ProductRepositoryHB(session));
         var userService = new UserService(new UserRepositoryHB(session));
+        var productService = new ProductService(new ProductRepositoryHB(session));
         CLIController controller = new CLIController(
                 userService,
                 productService,

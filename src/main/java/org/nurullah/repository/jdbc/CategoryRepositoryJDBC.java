@@ -4,12 +4,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.nurullah.connection.DBConnection;
 import org.nurullah.model.Category;
+import org.nurullah.model.Product;
 import org.nurullah.repository.CategoryRepository;
 import org.nurullah.repository.jdbc.query.CategoryQuery;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CategoryRepositoryJDBC implements CategoryRepository {
     private final Logger logger = LogManager.getLogger();
@@ -23,16 +26,35 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         try {
             var preparedStatement = connection.prepareStatement(CategoryQuery.saveCategoryQuery,
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, category.getName());
-            preparedStatement.setTimestamp(2, new Timestamp(category.getCreatedAt().getTime()));
+            preparedStatement.setInt(1, category.getId());
+            preparedStatement.setString(2, category.getName());
+            preparedStatement.setTimestamp(3, new Timestamp(category.getCreatedAt().getTime()));
+            preparedStatement.setString(4, category.getName());
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()){
                 category.setId(resultSet.getInt(1));
             }
+            var productIds = category.getProducts().stream().map(Product::getId).toList();
+            addProductsToCategory(category.getId(), productIds);
+
         } catch (SQLException e) {
             logger.warn("ERROR while saving category: " + e);
+        }
+    }
+    private void addProductsToCategory(int categoryId, List<Integer> productIds) {
+        try {
+            var preparedStatement = connection.prepareStatement(
+                    CategoryQuery.addProductsToCategoryQuery);
+            for (var productId : productIds){
+                preparedStatement.setInt(1, categoryId);
+                preparedStatement.setInt(2, productId);
+                preparedStatement.addBatch();
+            }
+            preparedStatement.executeBatch();
+        } catch (SQLException e) {
+            logger.warn("ERROR while adding products to category: " + e);
         }
     }
 
@@ -52,19 +74,6 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
     }
 
     @Override
-    public void updateCategory(int categoryId, String newName) {
-        try {
-            var preparedStatement = connection.prepareStatement(
-                    CategoryQuery.updateCategoryQuery);
-            preparedStatement.setString(1, newName);
-            preparedStatement.setInt(2, categoryId);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            logger.warn("ERROR while updating category: " + e);
-        }
-    }
-
-    @Override
     public Category findById(int id) {
         var category = new Category();
         try {
@@ -79,7 +88,7 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
                 category.setId(categoryId);
                 category.setName(categoryName);
                 category.setCreatedAt(createdAt);
-            }
+            } else return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -99,6 +108,7 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
 
                 Category category = new Category(categoryName, createdAt);
                 category.setId(categoryID);
+                category.setProducts(getProductsOfCategory(categoryID));
                 categories.add(category);
             }
         } catch (SQLException e) {
@@ -107,19 +117,29 @@ public class CategoryRepositoryJDBC implements CategoryRepository {
         return categories;
     }
 
-    @Override
-    public void addProductsToCategory(int categoryId, List<Integer> productIds) {
+    private Set<Product> getProductsOfCategory(int categoryId) {
+        Set<Product> products = new HashSet<>();
         try {
             var preparedStatement = connection.prepareStatement(
-                    CategoryQuery.addProductsToCategoryQuery);
-            for (var productId : productIds){
-                preparedStatement.setInt(1, categoryId);
-                preparedStatement.setInt(2, productId);
-                preparedStatement.addBatch();
+                    CategoryQuery.listProductsOfCategory);
+            preparedStatement.setInt(1, categoryId);
+
+            var resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                var id = resultSet.getInt("id");
+                var name = resultSet.getString("name");
+                var price = resultSet.getDouble("price");
+                var createdAt = resultSet.getTimestamp("createdAt");
+                Product product = new Product();
+                product.setId(id);
+                product.setName(name);
+                product.setPrice(price);
+                product.setCreatedAt(createdAt);
+                products.add(product);
             }
-            preparedStatement.executeBatch();
         } catch (SQLException e) {
-            logger.warn("ERROR while adding products to category: " + e);
+            logger.warn("ERROR while searching products in this category");
         }
+        return products;
     }
 }

@@ -24,12 +24,15 @@ public class OrderRepositoryJDBC implements OrderRepository {
         connection = DBConnection.getConnection();
     }
 
-    public void saveOrder(Order order, Map<Integer, Integer> itemMap){
+    @Override
+    public void saveOrder(Order order) {
         try {
             var preparedStatement = connection.prepareStatement(OrderQuery.saveOrderQuery,
                     Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, order.getUserId());
-            preparedStatement.setTimestamp(2, new Timestamp(order.getCreatedAt().getTime()));
+            preparedStatement.setInt(1, order.getId());
+            preparedStatement.setInt(2, order.getUserId());
+            preparedStatement.setTimestamp(3, new Timestamp(order.getCreatedAt().getTime()));
+            preparedStatement.setInt(4, order.getUserId());
             preparedStatement.executeUpdate();
 
             var resultSet = preparedStatement.getGeneratedKeys();
@@ -37,13 +40,28 @@ public class OrderRepositoryJDBC implements OrderRepository {
                 order.setId(resultSet.getInt(1));
             }
 
-            preparedStatement = connection.prepareStatement(OrderQuery.saveOrderItemsQuery);
-            for (Map.Entry<Integer, Integer> items : itemMap.entrySet()){
-                preparedStatement.setInt(1, order.getId());
-                preparedStatement.setInt(2, items.getKey());
-                preparedStatement.setInt(3, items.getValue());
-                preparedStatement.addBatch();
-            }
+            saveOrderItems(order);
+
+        } catch (SQLException e) {
+            logger.warn("ERROR while saving order: " + e);
+        }
+
+    }
+
+    private void saveOrderItems(Order order){
+        try {
+            var preparedStatement = connection.prepareStatement(OrderQuery.saveOrderItemsQuery);
+            order.getOrderItems().forEach(oi ->{
+                try {
+                    preparedStatement.setInt(1, order.getId());
+                    preparedStatement.setInt(2, oi.getProductId());
+                    preparedStatement.setInt(3, oi.getQuantity());
+                    preparedStatement.addBatch();
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+
+            });
             preparedStatement.executeBatch();
         } catch (SQLException e) {
             logger.warn("ERROR while saving order: " + e);
@@ -51,27 +69,18 @@ public class OrderRepositoryJDBC implements OrderRepository {
     }
 
     @Override
-    public void saveOrder(Order order) {
-
-    }
-
-    public void deleteOrder(int orderId){
+    public void deleteOrder(Order order) {
         try {
             var preparedStatement = connection.prepareStatement(OrderQuery.deleteFromOrderItems);
-            preparedStatement.setInt(1, orderId);
+            preparedStatement.setInt(1, order.getId());
             preparedStatement.executeUpdate();
 
             preparedStatement = connection.prepareStatement(OrderQuery.deleteOrderQuery);
-            preparedStatement.setInt(1, orderId);
+            preparedStatement.setInt(1, order.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.warn("ERROR while deleting order: " + e);
         }
-    }
-
-    @Override
-    public void deleteOrder(Order order) {
-
     }
 
     public List<Order> listOrders(){
@@ -96,25 +105,27 @@ public class OrderRepositoryJDBC implements OrderRepository {
         return orders;
     }
 
-    public void addProductsToOrder(int orderId, Map<Integer, Integer> itemMap) {
-        try {
-            var preparedStatement = connection.prepareStatement(
-                    OrderQuery.addProductsToOrderQuery);
-            for (Map.Entry<Integer, Integer> item : itemMap.entrySet()){
-                preparedStatement.setInt(1, orderId);
-                preparedStatement.setInt(2, item.getKey());
-                preparedStatement.setInt(3, item.getValue());
-                preparedStatement.addBatch();
-            }
-            preparedStatement.executeBatch();
-        } catch (SQLException e) {
-            logger.warn("ERROR while adding products to order: " + e);
-        }
-    }
-
     @Override
-    public Order findById(int givenId) {
-        return null;
+    public Order findById(int id) {
+        Order order = new Order();
+        try {
+            var preparedStatement = connection.prepareStatement(OrderQuery.findById);
+            preparedStatement.setInt(1, id);
+            var resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                var orderId = resultSet.getInt("id");
+                var userId = resultSet.getInt("userId");
+                var createdAt = resultSet.getTimestamp("createdAt");
+
+                order.setId(orderId);
+                order.setUserId(userId);
+                order.setCreatedAt(createdAt);
+            } else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return order;
     }
 
     private Map<String , Integer> findItemsOfOrder(int orderId){

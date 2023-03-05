@@ -47,6 +47,10 @@ public class CLIController {
     public void deleteUser() {
         System.out.print("The ID of user you want to delete: ");
         var id = scanner.nextInt();
+        if (userService.findById(id) == null) {
+            logger.error("Invalid user ID");
+            return;
+        }
         userService.deleteUser(id);
         logger.info("User with id number " + id + " has successfully deleted");
     }
@@ -70,6 +74,11 @@ public class CLIController {
     public void deleteProduct(){
         System.out.println("The ID of product you want to delete");
         var id = scanner.nextInt();
+
+        if (productService.findById(id) == null){
+            logger.error("Invalid product ID");
+            return;
+        }
         productService.deleteProduct(id);
         logger.info("The product with id number " + id + " has successfully deleted");
     }
@@ -77,6 +86,12 @@ public class CLIController {
     public void updateProduct(){
         System.out.print("The ID of the product you want to update: ");
         var id = scanner.nextInt();
+
+        if (productService.findById(id) == null){
+            logger.error("Invalid product ID");
+            return;
+        }
+
         scanner.nextLine();
         System.out.print("New name: ");
         var newName = scanner.nextLine();
@@ -102,6 +117,10 @@ public class CLIController {
     public void deleteCategory(){
         System.out.println("The id of the category you want to delete: ");
         var id = scanner.nextInt();
+        if (categoryService.findById(id) == null) {
+            logger.error("Invalid category ID");
+            return;
+        }
         categoryService.deleteCategory(id);
         logger.info("Category with id number " + id + " has successfully deleted");
     }
@@ -109,6 +128,10 @@ public class CLIController {
     public void updateCategory(){
         System.out.print("The ID of the category you want to update: ");
         var id = scanner.nextInt();
+        if (categoryService.findById(id) == null) {
+            logger.error("Invalid category ID");
+            return;
+        }
         scanner.nextLine();
         System.out.print("New name: ");
         var newName = scanner.nextLine();
@@ -124,7 +147,10 @@ public class CLIController {
     public void addProductsToCategory(){
         System.out.println("Specify the ID of the category you want to add products: ");
         var categoryId = scanner.nextInt();
-
+        if (categoryService.findById(categoryId) == null) {
+            logger.error("Invalid category ID");
+            return;
+        }
         System.out.println("Enter the IDs of the products you want to add");
         var products = scanner.next();
         String[] productArray = products.split(",");
@@ -183,6 +209,10 @@ public class CLIController {
     public void deleteOrder(){
         System.out.println("Please enter the ID of the order you want to delete");
         var id = scanner.nextInt();
+        if (orderService.findById(id) == null) {
+            logger.error("Invalid order ID");
+            return;
+        }
         orderService.deleteOrder(id);
         logger.info("Order with id number " + id + " successfully deleted");
     }

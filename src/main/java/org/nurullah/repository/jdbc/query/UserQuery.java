@@ -5,4 +5,5 @@ public class UserQuery {
             "VALUES(?, ?, ?)";
     public static final String deleteUserQuery = "DELETE FROM users WHERE id = ?";
     public static final String listUsersQuery = "SELECT * FROM users";
+    public static final String findById = "SELECT * FROM users WHERE id = ?";
 }

@@ -38,19 +38,15 @@ public class UserRepositoryJDBC implements UserRepository {
         }
     }
 
-    public void deleteUser(int userID) {
+    @Override
+    public void deleteUser(User user) {
         try {
             preparedStatement = connection.prepareStatement(UserQuery.deleteUserQuery);
-            preparedStatement.setInt(1, userID);
+            preparedStatement.setInt(1, user.getId());
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             logger.warn("ERROR while deleting user: " + e);
         }
-    }
-
-    @Override
-    public void deleteUser(User user) {
-
     }
 
     public List<User> listUsers() {
@@ -77,6 +73,26 @@ public class UserRepositoryJDBC implements UserRepository {
 
     @Override
     public User findById(int id) {
-        return null;
+        User user = new User();
+        try {
+            var preparedStatement = connection.prepareStatement(UserQuery.findById);
+            preparedStatement.setInt(1, id);
+            var resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                var userId = resultSet.getInt("id");
+                var name = resultSet.getString("name");
+                var email = resultSet.getString("email");
+                var createdAt = resultSet.getTimestamp("createdAt");
+
+                user.setId(userId);
+                user.setName(name);
+                user.setEmail(email);
+                user.setCreatedAt(createdAt);
+            } else return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return user;
     }
 }

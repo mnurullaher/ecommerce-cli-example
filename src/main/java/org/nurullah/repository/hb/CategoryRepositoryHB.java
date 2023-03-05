@@ -6,12 +6,7 @@ import org.nurullah.repository.CategoryRepository;
 
 import java.util.List;
 
-public class CategoryRepositoryHB implements CategoryRepository {
-    private final Session session;
-
-    public CategoryRepositoryHB(Session session){
-        this.session = session;
-    }
+public record CategoryRepositoryHB(Session session) implements CategoryRepository {
 
     @Override
     public void saveCategory(Category category) {
@@ -21,20 +16,10 @@ public class CategoryRepositoryHB implements CategoryRepository {
     }
 
     @Override
-    public void addProductsToCategory(int categoryId, List<Integer> productIds){
-
-    }
-
-    @Override
     public void deleteCategory(Category category) {
         var txn = session.beginTransaction();
         session.remove(category);
         txn.commit();
-    }
-
-    @Override
-    public void  updateCategory(int categoryId, String newName){
-
     }
 
     @Override

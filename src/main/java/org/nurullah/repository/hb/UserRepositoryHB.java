@@ -6,13 +6,8 @@ import org.nurullah.repository.UserRepository;
 
 import java.util.List;
 
-public class UserRepositoryHB implements UserRepository {
+public record UserRepositoryHB(Session session) implements UserRepository {
 
-    private final Session session;
-
-    public UserRepositoryHB(Session session){
-        this.session = session;
-    }
     @Override
     public void saveUser(User user) {
         var txn = session.beginTransaction();
@@ -25,11 +20,6 @@ public class UserRepositoryHB implements UserRepository {
         var txn = session.beginTransaction();
         session.remove(user);
         txn.commit();
-    }
-
-    @Override
-    public void deleteUser(int userID) {
-
     }
 
     @Override

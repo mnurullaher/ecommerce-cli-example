@@ -3,9 +3,7 @@ package org.nurullah.repository.hb;
 import org.hibernate.Session;
 import org.nurullah.model.Product;
 import org.nurullah.repository.ProductRepository;
-import pl.mjaron.etudes.Str;
 
-import java.util.Arrays;
 import java.util.List;
 
 public record ProductRepositoryHB(Session session) implements ProductRepository {
@@ -25,11 +23,6 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
     }
 
     @Override
-    public void deleteProduct(int productId) {
-
-    }
-
-    @Override
     public List<Product> listProducts() {
         var txn = session.beginTransaction();
         var products = session.createQuery("SELECT p FROM products p", Product.class)
@@ -46,8 +39,4 @@ public record ProductRepositoryHB(Session session) implements ProductRepository 
         return product;
     }
 
-    @Override
-    public void updateProduct(int productId, String newName, double newPrice) {
-
-    }
 }
